@@ -1,0 +1,16 @@
+export default {
+  'Server' : 'Sunucu Hatası',
+  'Authorization' : 'Yetkilendirme Hatası',
+  'ProfileNotFound' : 'Profil Bulunamadı',
+  'FileUpload' : 'Dosya Yüklenemiyor',
+  'ImageUpload' : 'Resim Yüklenemiyor',
+  'TicketNotFound' : 'Talep Bulunamadı',
+  'TicketReceive' : 'Talep Alma Hatası',
+  'DesicionUpdate' : 'Karar Güncelleme Hatası',
+  'TicketClose' : 'Talep Kapatma Hatası',
+  'AllFieldsRequired' : 'Bütün Alanlar Zorunludur',
+  'ProfileCreate' : 'Profil Oluşturma Hatası',
+  'ProfileUpdate' : 'Profil Güncelleme Hatası',
+  'TicketCreate' : 'Talep Oluşturma Hatası',
+  'Unexpected' : 'Beklenmedik bir hata oluştu',
+}

@@ -1,0 +1,15 @@
+export default {
+  "content-primary": "#272E35",
+  "content-secondary": "#555F6D",
+  "content-tertiary": "#7E8B99",
+  "content-disabled": "#9EA8B3",
+  "content-inverted-primary": "#ffffff",
+  "content-inverted-secondary": "rgba(255, 255, 255, 0.64)",
+  "content-inverted-tertiary": "rgba(255, 255, 255, 0.4)",
+  "content-inverted-disabled": "rgba(255, 255, 255, 0.24)",
+  "content-informative": "rgba(48, 98, 212, 1)",
+  "content-positive": "rgba(29, 124, 77, 1)",
+  "content-warning": "rgba(245, 150, 56, 1)",
+  "content-negative": "rgba(197, 52, 52, 1)",
+  "content-brand": "rgba(48, 98, 212, 1)",
+};
