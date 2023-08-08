@@ -1,6 +1,7 @@
 <script setup>
 import LayerTwoIcon from '@/components/icons/LayerTwoIcon.vue';
 
+
 const headers = ref([
   { name: "NAME", value: "name" },
   { name: "POSITION", value: "position" },
@@ -56,6 +57,16 @@ const users = ref([
     status: "Active",
   },
 ]);
+
+// function test() {
+//   fetch('/api/hello').then((response) => response.json()).then((data) => {
+//     console.log(data);
+//   })
+// }
+
+definePageMeta({
+  // middleware: ['route-middleware'],
+})
 </script>
 
 <template>
@@ -64,6 +75,7 @@ const users = ref([
       {{ $t('home.Dashboard') }}
     </div>
     <div class="flex flex-col sm:flex-row gap-4">
+      <!-- <ButtonComponent text="deneme" @click="test" /> -->
       <CardComponent size="medium" line>
         <template #title>
           Example Card

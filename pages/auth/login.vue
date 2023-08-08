@@ -3,9 +3,14 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 import themeConfig from '@/themeConfig';
+import { useAuthStore } from '@/stores/auth/auth';
 
 definePageMeta({
   layout: "blank",
+  name: "Login",
+  isAuth: true,
+  // middleware: ['route-middleware'],
+
 });
 
 const { t } = useI18n()
@@ -19,8 +24,36 @@ const passwordInput = ref('');
 const passwordError = ref('');
 
 const router = useRouter();
+const authStore = useAuthStore();
+async function onSubmit() {
+  try {
+    isLoading.value = true;
+    await authStore.login(emailInput.value, passwordInput.value, rememberMe.value);
+    isLoading.value = false;
+    router.push('/');
+  } catch (err) {
+    if (err.errors) {
+      const { errors } = err;
 
+      // eslint-disable-next-line no-shadow
+      errors.forEach((error) => {
+        if (error.path === 'password') {
+          passwordError.value = error.msg;
+        }
 
+        if (error.path === 'email') {
+          emailError.value = error.msg;
+        }
+      });
+    } else if (err.error) {
+      error.value = err.error;
+    } else {
+      console.log('arda');
+    }
+
+    isLoading.value = false;
+  }
+}
 </script>
 <template>
   <div class="flex min-h-full w-full">
@@ -87,7 +120,7 @@ const router = useRouter();
         </div>
       </div>
     </div>
-    <div class="relative hidden w-0 flex-1 lg:block">
+        <div class="relative hidden w-0 flex-1 lg:block">
       <img
         class="absolute inset-0 h-full w-full object-cover"
         src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"

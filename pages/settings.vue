@@ -1,11 +1,24 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth/auth';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
 const language = ref('en');
 const notificationEnabled = ref(true);
 const themeMod = ref(false);
+
+const authStore = useAuthStore();
+const { t } = useI18n();
+async function logoutFunction() {
+  try {
+    await authStore.logout();
+    router.push({ name: 'Login' });
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 </script>
 
@@ -71,10 +84,10 @@ const themeMod = ref(false);
           </div>
         </div>
       </div>
-      <div class="flex justify-end mt-4 gap-2">
-        <ButtonComponent intent="destructive" text="Delete Account"  />
-        <ButtonComponent intent="destructive" appearance="secondary" text="Logout"  />
-        <ButtonComponent text="Save changes"  />
+      <div class="flex flex-wrap justify-end mt-4 gap-2">
+        <ButtonComponent size="small" intent="destructive" text="Delete Account" />
+        <ButtonComponent size="small" intent="destructive" appearance="secondary" text="Logout" @click="logoutFunction" />
+        <ButtonComponent size="small" text="Save changes"  />
       </div>
     </CardComponent>
   </div>

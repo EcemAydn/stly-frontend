@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import { cva } from "class-variance-authority";
 
 const input = cva(["flex items-center gap-1 text-xs"], {
@@ -9,6 +10,9 @@ const input = cva(["flex items-center gap-1 text-xs"], {
     },
   },
 });
+
+const inputTag = ref();
+
 defineProps({
   type: {
     type: String,
@@ -52,7 +56,8 @@ defineEmits(["update:modelValue"]);
       >{{ label }}</label
     >
     <div
-      class="flex gap-2 transition-all ease-in-out duration-300 items-center border bg-interaction-background-form-field py-2 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal"
+      @click="() => inputTag.focus()"
+      class="flex gap-2 transition-all ease-in-out duration-300 items-center border bg-interaction-background-form-field py-2 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal cursor-text"
       :class="
         error
           ? 'border-interaction-border-alert'
@@ -64,6 +69,7 @@ defineEmits(["update:modelValue"]);
     >
       <slot name="prepend"></slot>
       <input
+        ref="inputTag"
         class="w-full outline-none bg-transparent text-sm"
         :disabled="disabled"
         v-bind="$attrs"

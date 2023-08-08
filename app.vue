@@ -1,10 +1,13 @@
 <script setup>
-
+  import { useAppStore } from './stores/app';
+  const appStore = useAppStore();
 </script>
 
 <template>
   <div class="overflow-hidden bg-white w-full h-full relative">
-    <TransitionGroup name="fade">
+    <Loading v-if="appStore.isLoading" />
+
+    <TransitionGroup v-else name="fade">
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>

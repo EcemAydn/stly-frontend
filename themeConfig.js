@@ -7,6 +7,7 @@ export default {
   sidebar: {
     size: 'mini', // mini or normal
     defaultScale: 'mini', // mini or normal
-  }
+  },
+  paymentReferenceCode: '77b9a037-6dbb-4934-a97a-105ad344ffa3',
 
 }

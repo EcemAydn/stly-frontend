@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 import themeConfig from '@/themeConfig';
-import { useAuthStore } from '@/stores/auth/auth';
+import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/stores/auth/auth'
+import { useRouter } from 'vue-router';
 
 definePageMeta({
   layout: "blank",
+  name: "Register",
+  isAuth: true,
 });
 
 const { t } = useI18n();
@@ -20,8 +22,8 @@ const confirmPassword = ref('');
 const confirmPasswordError = ref('');
 const fullNameInput = ref('');
 const fullNameError = ref('');
-const router = useRouter();
 
+const router = useRouter();
 const authStore = useAuthStore();
 
 async function onSubmit() {
@@ -32,11 +34,11 @@ async function onSubmit() {
     return;
   }
 
-  const [firstName, lastName] = nameParts;
+  const [given_name, family_name] = nameParts;
   try {
 
     const nameRegEx = /^[A-Za-z\s]+$/;
-    if (!nameRegEx.test(firstName) || !nameRegEx.test(lastName)) {
+    if (!nameRegEx.test(given_name) || !nameRegEx.test(family_name)) {
       fullNameError.value = 'Name should only contain alphabetic characters!';
       return;
     }
@@ -52,16 +54,16 @@ async function onSubmit() {
       return;
     }
     isLoading.value = true;
-    await authStore.register(firstName, lastName, emailInput.value, passwordInput.value, confirmPassword.value); 
+    await authStore.register(given_name, family_name, emailInput.value, passwordInput.value, confirmPassword.value); 
     isLoading.value = false;
-    router.push({ name: 'Home' });
+    router.push('/');
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
 
       // eslint-disable-next-line no-shadow
       errors.forEach((error) => {
-        if (error.path === 'first_name' || error.path === 'last_name') {
+        if (error.path === 'given_name' || error.path === 'last_name') {
           fullNameError.value = error.msg;
         }
 
@@ -195,3 +197,4 @@ async function onSubmit() {
     </div>
   </div>
 </template>
+stores/auth/tsstores/auth/ts

@@ -1,8 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import themeConfig from '@/themeConfig';
+import { useAuthStore } from '@/stores/auth/auth';
 
 definePageMeta({
-  layout: 'blank',
+  layout: "blank",
+  name: "forgotPassword",
+  isAuth: true,
 });
 
 const isLoading = ref(false);
@@ -11,6 +16,37 @@ const emailInput = ref('');
 const emailError = ref('');
 const passwordError = ref('');
 
+const authStore = useAuthStore();
+const { t } = useI18n();
+
+async function onSubmit() {
+  try {
+    isLoading.value = true;
+    await authStore.forgotPassword(emailInput.value);
+    isLoading.value = false;
+  } catch (err) {
+    if (err.errors) {
+      const { errors } = err;
+
+      // eslint-disable-next-line no-shadow
+      errors.forEach((error) => {
+        if (error.path === 'password') {
+          passwordError.value = error.msg;
+        }
+
+        if (error.path === 'email') {
+          emailError.value = error.msg;
+        }
+      });
+    } else if (err.error) {
+      error.value = err.error;
+    } else {
+      console.log('arda',);
+    }
+
+    isLoading.value = false;
+  }
+}
 </script>
 
 <template>
