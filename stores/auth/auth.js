@@ -1,7 +1,9 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from '../../utils/axios';
+import themeConfig from '../../themeConfig';
 
+const authProjectName = themeConfig.stores.authProjectName;
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref(null);
 
@@ -23,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
   function login(username, password, rememberMe) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post('/login?project=ecommerce', { username, password, rememberMe });
+        const response = await axios.post(`/login?project=${authProjectName}`, { username, password, rememberMe });
         currentUser.value = response.data.data.user;
         saveToken(response.data.data.token, rememberMe);
         resolve();
@@ -41,7 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await 
-        axios.post('/register?project=ecommerce', {
+        axios.post(`/register?project=${authProjectName}`, {
           email, password, confirm_password: confirmPassword, given_name, family_name,
         });
         currentUser.value = response.data.data.user;
@@ -62,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     return new Promise((resolve, reject) => {
       const token = localStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY) || sessionStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY);
-      axios.get('/logout?project=ecommerce', { headers: { Authorization: `Bearer ${token}` } })
+      axios.get(`/logout?project=${authProjectName}`, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
           localStorage.removeItem(import.meta.env.VITE_APP_TOKEN_KEY);
           sessionStorage.removeItem(import.meta.env.VITE_APP_TOKEN_KEY);
@@ -80,7 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
   function forgotPassword(email) {
     return new Promise((resolve, reject) => {
-      axios.post('/reset-password?project=ecommerce', { email })
+      axios.post(`/reset-password?project=${authProjectName}`, { email })
         .then((response) => {
           resolve(response);
         })
@@ -96,7 +98,7 @@ export const useAuthStore = defineStore('auth', () => {
   
   function me() {
     return new Promise((resolve, reject) => {
-      axios.get('/auth-user?project=ecommerce').then((response) => {
+      axios.get(`/auth-user?project=${authProjectName}`).then((response) => {
         currentUser.value = response.data.data.user;
 
         resolve(response);
@@ -112,10 +114,15 @@ export const useAuthStore = defineStore('auth', () => {
 
   function update(payload){
     return new Promise((resolve, reject) => {
-      axios.put('/update?project=ecommerce', payload).then((response) => {
+      const token = localStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY) || sessionStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY);
+      axios.post(`/update?project=${authProjectName}`, payload , { 
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => {
         currentUser.value = response.data.data.user;
         resolve(response);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         if (error.response) {
           reject(error.response.data);
         } else {
