@@ -20,6 +20,7 @@ async function logoutFunction() {
   }
 }
 
+
 </script>
 
 <template>
@@ -72,7 +73,7 @@ async function logoutFunction() {
               </SelectComponent>
             </div>
           </div>
-          <div>
+          <!-- <div>
             <div class="mt-2">
             <ToggleComponent label="I want to receive email notifications" v-model="notificationEnabled" />
             </div>
@@ -81,13 +82,13 @@ async function logoutFunction() {
             <div class="mt-2">
             <ToggleComponent label="Dark Mode" v-model="themeMod" />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="flex flex-wrap justify-end mt-4 gap-2">
-        <ButtonComponent size="small" intent="destructive" text="Delete Account" />
+        <!-- <ButtonComponent size="small" intent="destructive" text="Delete Account" /> -->
         <ButtonComponent size="small" intent="destructive" appearance="secondary" text="Logout" @click="logoutFunction" />
-        <ButtonComponent size="small" text="Save changes"  />
+        <ButtonComponent size="small" text="Save changes" />
       </div>
     </CardComponent>
   </div>
