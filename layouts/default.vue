@@ -14,10 +14,12 @@ import IconBase from '@/components/icons/IconBase.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import WalletIcon from '@/components/icons/WalletIcon.vue';
 import CalendarIcon from '@/components/icons/Calendar.vue';
+import { useAuthStore } from '@/stores/auth/auth';
 
 const { setLocale } = useI18n();
 const { locale, availableLocales } = useI18n();
 const localePath = useLocalePath();
+const authStore = useAuthStore();
 
 const route = useRoute();
 const isMobile = ref(false);
@@ -33,25 +35,15 @@ const footerLinks = [
   // },
   {
     id: 7,
+    title: 'Biling',
+    to: '/payment/plans',
+    icon: WalletIcon,
+  },
+  {
+    id: 8,
     title:'Settings',
     to: '/settings',
     icon: SettingIcon,
-    children: [
-      {
-        id: 8,
-        title: 'Biling',
-        icon: WalletIcon,
-        viewBox: '0 0 24 24',
-        children: [
-          {
-            id: 9,
-            title: 'Plans',
-            to: '/payment/plans',
-            icon: CalendarIcon,
-          },
-        ]
-      },
-    ]
   },
 ];
 
@@ -105,13 +97,10 @@ onUnmounted(() => {
             :items="footerLinks"
           />
         </div>
-        <RouterLink to="/profile" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
-          <AvatarComp color="blue" avatarText="Ecem Aydın">
-            <template #label>
-              <div class="text-sm" v-if="!isMobile && !collapsed">ecem@ron.digital</div>
-            </template>
-          </AvatarComp>
-        </RouterLink>
+        <NuxtLink to="/profile" class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
+          <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-md" />
+              <div class="text-sm" v-if="!isMobile && !collapsed">{{ authStore.currentUser.email }}</div>
+        </NuxtLink>
       </div>
       
     </template>
@@ -131,7 +120,7 @@ onUnmounted(() => {
           <MenuIcon />
         </IconBase>
         <div class="flex items-center justify-end gap-2 sm:gap-4">
-          <SearchComponent v-if="!isMobile" class="w-full"></SearchComponent>
+          <!-- <SearchComponent v-if="!isMobile" class="w-full"></SearchComponent> -->
           
           <div class="flex items-center gap-3">
             <IconBase class="text-content-primary">

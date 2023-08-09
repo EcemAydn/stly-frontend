@@ -84,22 +84,22 @@ async function createSubscription() {
   }
   // isLoading.value = true;
   await subscriptionStore.createSubscription({
-    name: userStore.currentUser.firstName,
-    surname: userStore.currentUser.lastName,
-    pricingPlanId: subscriptionStore.selectedPlan,
+    name: userStore.currentUser.givenName,
+    surname: userStore.currentUser.familyName,
+    pricingPlan: subscriptionStore.selectedPlan.id,
     cardHolderName: cardHolderName.value,
     cardNumber: cardNumber.value.replaceAll(' ', ''),
     expireMonth: cardExpiryMonth.value,
     expireYear: cardExpiryYear.value,
     cvc: cardCvc.value,
     email: userStore.currentUser.email,
-    shippingContactName: userStore.currentUser.firstName + ' ' + userStore.currentUser.lastName,
+    shippingContactName: userStore.currentUser.givenName + ' ' + userStore.currentUser.familyName,
     shippingCity: city.value,
     shippingDistrict: district.value,
     shippingCountry: country.value,
     shippingAddress: address.value,
     shippingZipCode: zipCode.value,
-    billingContactName: userStore.currentUser.firstName + ' ' + userStore.currentUser.lastName,
+    billingContactName: userStore.currentUser.givenName + ' ' + userStore.currentUser.familyName,
     billingCity: city.value,
     billingDistrict: district.value,
     billingCountry: country.value,
@@ -108,7 +108,7 @@ async function createSubscription() {
     gsmNumber: (countryCode.value.replace('+', '') + phone.value).replaceAll(' ', ''),
   })
     .then(async() => {
-      // await userStore.get();
+      await userStore.me();
       showModal.value = false;
     })
     .catch((err) => {

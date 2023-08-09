@@ -4,10 +4,10 @@ import payment from '../../utils/payment';
 import { useAuthStore } from '../auth/auth';
 import themeConfig from '../../themeConfig';
 
-const paymentReferenceCode = themeConfig.paymentReferenceCode;
+const paymentReferenceCode = themeConfig.stores.paymentReferenceCode;
 
 export const useSubscriptionStore = defineStore('subs', () => {
-  const subscriptions = ref([]);
+  const subscription = ref([]);
   const plans = ref({
     monthly: [],
     yearly: [],
@@ -46,9 +46,9 @@ function createSubscription(data) {
   return new Promise((resolve, reject) => {
     try {
       const authStore = useAuthStore();
-      payment.post(`/subscriptions?referenceCode=${paymentReferenceCode}`, data)
+      payment.post(`/subscription?referenceCode=${paymentReferenceCode}`, data)
       .then((response) => {
-        subscriptions.value = response.data.data;
+        subscription.value = response.data.data;
         authStore.update({user_data: {
           subscription_id: response.data.data.subscription.id,
           subscription_status: 'ACTIVE',
@@ -72,10 +72,11 @@ function get(){
   return new Promise((resolve, reject) => {
     try {
       const authStore = useAuthStore();
-      payment.get(`/subscription/${authStore.user_data.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
-        subscriptions.value = response.data.data;
+      payment.get(`/subscription/${authStore.currentUser.details.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
+        subscription.value = response.data.data;
         resolve(response.data);
       }).catch((error) => {
+        console.log(error);
         if (error.response) {
           reject(error.response.data);
         } else {
@@ -89,24 +90,26 @@ function get(){
 }
 
 // api/subscriptions/cancel
-// function cancel(){
-//   return new Promise((resolve, reject) => {
-//     try {
-//       api.post('/api/subscriptions/cancel').then((response) => {
-//         subscriptions.value = response.data.data;
-//         resolve(response.data);
-//       }).catch((error) => {
-//         if (error.response) {
-//           reject(error.response.data);
-//         } else {
-//           reject(error);
-//         }
-//       });
-//     } catch (error) {
-//       reject(error);
-//     }
-//   })
-// }
+function cancel(){
+  return new Promise((resolve, reject) => {
+    console.log('cancel');
+    try {
+      const authStore = useAuthStore();
+      payment.delete(`/subscription/${authStore.currentUser.details.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
+        subscription.value = response.data.data;
+        resolve(response.data);
+      }).catch((error) => {
+        if (error.response) {
+          reject(error.response.data);
+        } else {
+          reject(error);
+        }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  })
+}
 
 // // POST - api/subscriptions/upgrade
 // function upgrade(){
@@ -129,14 +132,14 @@ function get(){
 // }
 
   return {
-    subscriptions,
+    subscription,
     plans,
     selectedPlan,
 
     createSubscription,
     getProduct,
-    // get,
-    // cancel,
+    get,
+    cancel,
     // upgrade,
   };
 });

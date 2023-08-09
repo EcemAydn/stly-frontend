@@ -38,7 +38,6 @@ async function CardFunction(plan) {
 }
 
 async function handleCancel() {
-  cancelLoading.value = true;
   try {
     isLoading.value = true;
     await subscriptionStore.cancel();
@@ -54,7 +53,7 @@ async function handleCancel() {
 }
 
 const selectedPlans = computed(() => {
-  const activePricingPlanId = subscriptionStore.subscriptions?.subscription?.original?.data?.subscription?.pricingPlan?.id;
+  const activePricingPlanId = subscriptionStore.subscription?.subscription?.pricingPlan?.id;
 
   if (selectedHeader.value === 'MONTHLY') {
     return subscriptionStore.plans.monthly.map((plan) => ({
@@ -77,7 +76,7 @@ onMounted(async () => {
   try {
     await Promise.all([
       await subscriptionStore.getProduct(),
-      // await subscriptionStore.get(),
+      await subscriptionStore.get(),
     ])
     isLoadingButton.value = false;
   } catch {
