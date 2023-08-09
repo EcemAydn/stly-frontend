@@ -1,6 +1,9 @@
 <script setup>
 import LayerTwoIcon from '@/components/icons/LayerTwoIcon.vue';
+import { useAuthStore } from '@/stores/auth/auth';
+import SpaceShip from '@/components/icons/SpaceShip.vue';
 
+const authStore = useAuthStore();
 
 const headers = ref([
   { name: "NAME", value: "name" },
@@ -72,7 +75,14 @@ definePageMeta({
 <template>
   <div class="flex flex-col gap-6">
     <div class="text-2xl">
-      {{ $t('home.Dashboard') }}
+      <div class="flex items-center gap-2">
+          <IconBase class="w-6 h-6 sm:!w-10 sm:!h-10" viewBox="0 0 512 512" color="blue">
+            <SpaceShip />
+          </IconBase>
+          <div class="text-xl sm:!text-3xl">
+            Hey {{ authStore.currentUser.givenName.toUpperCase() }}!
+          </div>
+        </div>
     </div>
     <div class="flex flex-col sm:flex-row gap-4">
       <!-- <ButtonComponent text="deneme" @click="test" /> -->
