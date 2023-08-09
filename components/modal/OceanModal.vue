@@ -13,7 +13,7 @@ defineProps({
 
 </script>
 <template>
-  <div @click="closeModalButton" class="fixed inset-0 flex items-center justify-center backdrop-blur-md">
+  <div @click="closeModalButton" class="fixed inset-0 flex items-center justify-center">
     <CardComponent border="secondary" @click.stop :size="size" class="p-4 w-full">
       <slot />
     </CardComponent>
