@@ -1,8 +1,24 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/stores/auth/auth';
+import MailIcon from '@/components/icons/MailIcon.vue';
 
 const router = useRouter();
+const authStore = useAuthStore();
+
+async function updateUser() {
+  try {
+    await authStore.update({
+      id: authStore.currentUser.id,
+      given_name: authStore.currentUser.givenName,
+      family_name: authStore.currentUser.familyName,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 onMounted(async () => {
   isLoading.value = false;
@@ -24,6 +40,7 @@ onMounted(async () => {
                   id="name"
                   name="name"
                   autocomplete="name"
+                  v-model="authStore.currentUser.givenName"
                   required
                 />
               </div>
@@ -35,6 +52,7 @@ onMounted(async () => {
                   id="lastname"
                   name="lastname"
                   autocomplete="lastname"
+                  v-model="authStore.currentUser.familyName"
                   required
                 />
               </div>
@@ -42,8 +60,12 @@ onMounted(async () => {
             <div>
               <div class="mt-2">
                 <InputComponent
-                :label="$t('form.Email')"
+                  :label="$t('form.Email')"
                   :helper="$t('form.ChangeEmail')"
+                  id="email"
+                  name="email"
+                  autocomplete="email"
+                  v-model="authStore.currentUser.email"
                   disabled
                 >
                 <template #prepend>
@@ -56,7 +78,7 @@ onMounted(async () => {
             </div>
           </div>
           <div class="flex gap-4 flex-col ">
-            <img src="https://i.pravatar.cc" alt="Avatar" class="rounded-3xl w-48 h-40 opacity-90 mt-6" />
+            <img :src="authStore.currentUser.picture" alt="Avatar" class="rounded-3xl w-48 h-36 opacity-90 mt-6" />
             <ButtonComponent variant="ghost" size="small" :text="$t('form.UploadPicture')" />
           </div>
         </div>
