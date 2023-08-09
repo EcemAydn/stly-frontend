@@ -38,6 +38,7 @@ async function CardFunction(plan) {
 }
 
 async function handleCancel() {
+  cancelLoading.value = true;
   try {
     isLoading.value = true;
     await subscriptionStore.cancel();
@@ -88,14 +89,14 @@ onMounted(async () => {
 
 </script>
 <template>
- <div v-if="!isLoadingButton" class="pt-4 pb-40 flex flex-col gap-8 max-w-7xl mx-auto px-4">
+ <div v-if="!isLoadingButton" class="pb-20 flex flex-col gap-4 max-w-7xl mx-auto px-4">
     <!-- header -->
     <HeaderComponent size="large" title="Plans & Pricing" description="Start small and scale up as you need" />
-    <div v-if="!showModal" class="mx-auto bg-white p-2 rounded-md">
+    <div class="mx-auto bg-white p-2 rounded-md">
       <TabsComponent color="ghost" v-model="selectedHeader" :items="tabs" />
     </div>
     
-    <div v-if="!showModal" class="flex flex-wrap gap-4 justify-center">
+    <div class="flex flex-wrap gap-4 justify-center">
       <CardComponent
         class="h-full"
         size="xxsmall"
@@ -189,8 +190,13 @@ onMounted(async () => {
       <OceanModal size="xlarge" v-if="showModal" class="modal">
         <form v-if="subscriptionStore.selectedPlan" class="w-full text-sm">
           <div class="grid sm:grid-cols-5 gap-4">
-            <div class="col-span-3 flex flex-col gap-2">
-              <div class="text-lg">Upgrade Your Plan</div>
+            <div class="sm:col-span-3 flex flex-col gap-2">
+              <div class="flex w-full items-center justify-between">
+                <div class="text-lg">Upgrade Your Plan</div>
+                <IconBase @click="showModal = false" class="cursor-pointer sm:hidden">
+                  <CloseIcon />
+                </IconBase>
+              </div>
               <div class="border border-border-subtle-informative rounded-md p-3 h-full">
                 <div>{{ subscriptionStore.selectedPlan.name }}</div>
                 <div class="flex flex-col gap-4 pt-2">
@@ -233,10 +239,10 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
-            <div class="w-full col-span-2">
+            <div class="w-full sm:col-span-2">
               <div class="flex w-full items-center justify-between pb-2">
                 <div class="text-lg">Summary</div>
-                <IconBase @click="showModal = false" class="cursor-pointer">
+                <IconBase @click="showModal = false" class="cursor-pointer hidden sm:block">
                   <CloseIcon />
                 </IconBase>
               </div>
@@ -321,5 +327,6 @@ onMounted(async () => {
   left: 0%;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
