@@ -7,8 +7,10 @@ import MailIcon from '@/components/icons/MailIcon.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const isLoading = ref(false);
 
 async function updateUser() {
+  isLoading.value = true;
   try {
     await authStore.update({
       id: authStore.currentUser.id,
@@ -17,6 +19,8 @@ async function updateUser() {
     });
   } catch (error) {
     console.log(error);
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -26,7 +30,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="!isLoading" class="w-full">
+  <div class="w-full">
     <CardComponent border="secondary" size="full" class="p-12">
       <div class="flex flex-wrap gap-8">
         <div class="text-2xl">{{ $t('form.Profile') }}</div>
@@ -79,19 +83,19 @@ onMounted(async () => {
           </div>
           <div class="flex gap-4 flex-col ">
             <img :src="authStore.currentUser.picture" alt="Avatar" class="rounded-3xl w-48 h-36 opacity-90 mt-6" />
-            <ButtonComponent variant="ghost" size="small" :text="$t('form.UploadPicture')" />
+            <!-- <ButtonComponent variant="ghost" size="small" :text="$t('form.UploadPicture')" /> -->
           </div>
         </div>
       </div>
       <div class="flex justify-end mt-4 gap-2">
-        <ButtonComponent :text="$t('form.SaveChanges')" @click="updateUser" />
+        <ButtonComponent :loading="isLoading" :text="$t('form.SaveChanges')" @click="updateUser" />
       </div>
     </CardComponent>
   </div>
 
-  <div v-else class="overlay">
+  <!-- <div v-else class="overlay">
     <lottie-player autoplay loop mode="normal" src="/loading.json" class="w-[320px] md:!w-[450px]" />
-  </div>
+  </div> -->
 </template>
 <style scoped>
 .overlay {

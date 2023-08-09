@@ -8,18 +8,21 @@ const router = useRouter();
 const language = ref('en');
 const notificationEnabled = ref(true);
 const themeMod = ref(false);
+const isLoading = ref(false);
 
 const authStore = useAuthStore();
 const { t } = useI18n();
 async function logoutFunction() {
+  isLoading.value = true;
   try {
     await authStore.logout();
     router.push({ name: 'Login' });
   } catch (err) {
     console.log(err);
+  } finally {
+    isLoading.value = false;
   }
 }
-
 
 </script>
 
@@ -87,7 +90,7 @@ async function logoutFunction() {
       </div>
       <div class="flex flex-wrap justify-end mt-4 gap-2">
         <!-- <ButtonComponent size="small" intent="destructive" text="Delete Account" /> -->
-        <ButtonComponent size="small" intent="destructive" appearance="secondary" text="Logout" @click="logoutFunction" />
+        <ButtonComponent :loading="isLoading" size="small" intent="destructive" appearance="secondary" text="Logout" @click="logoutFunction" />
         <ButtonComponent size="small" text="Save changes" />
       </div>
     </CardComponent>

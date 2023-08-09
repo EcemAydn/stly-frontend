@@ -7,6 +7,7 @@ definePageMeta({
   isAuth: false
 });
 
+const isLoading = ref(false);
 const subscriptionStore = useSubscriptionStore();
 const userStore = useAuthStore();
 const cardHolderName = ref(null);
@@ -82,7 +83,7 @@ async function createSubscription() {
     formErrors.value.countryCode = 'Country Code must be 2 digits';
     return;
   }
-  // isLoading.value = true;
+  isLoading.value = true;
   await subscriptionStore.createSubscription({
     name: userStore.currentUser.givenName,
     surname: userStore.currentUser.familyName,
@@ -124,7 +125,7 @@ async function createSubscription() {
       }
     })
     .finally(() => {
-      // isLoading.value = false;
+      isLoading.value = false;
     })
 }
 </script>
@@ -357,7 +358,7 @@ async function createSubscription() {
         </div>
 
         <div class="p-8 flex flex-col gap-3">
-          <ButtonComponent block :text="$t('payment.Subscribe')" @click="createSubscription" />
+          <ButtonComponent :loading="isLoading" block :text="$t('payment.Subscribe')" @click="createSubscription" />
 
           <div class="flex flex-col items-center justify-center w-full text-sm font-medium text-indigo-600">
             <span class="text-sm text-black mr-1"> {{ $t('payment.paymentOr') }} </span>
