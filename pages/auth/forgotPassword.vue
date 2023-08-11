@@ -50,60 +50,42 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-full w-full">
-    <div
-      class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-60"
-    >
-      <InlineBanner v-if="error" type="negative" title="Error" :description="error"></InlineBanner>
-      <div class="mx-auto w-full max-w-sm lg:w-96">
-        <div>
-          <h2
-            class="mt-8 text-3xl font-semibold leading-9 tracking-wide text-content-primary"
-          >
-            Forgot your password?
-          </h2>
-          <p class="mt-2 text-sm leading-6 text-content-secondary">
-            Not a member?
-            <RouterLink
-              to="/auth/register"
-              class="font-semibold text-global-blue-500 hover:text-global-blue-600"
-              >Get Started</RouterLink
-            >
-          </p>
-        </div>
-
-        <div class="mt-10">
-          <div>
-            <form @submit.prevent="onSubmit" class="space-y-6">
-              <div>
-                <InputComponent
-                  :disabled="isLoading"
-                  v-model="emailInput"
-                  id="email"
-                  name="email"
-                  type="email"
-                  label="E-mail"
-                  autocomplete="email"
-                  required
-                  :error="emailError"
-                  @focus="emailError = ''"
-                />
-              </div>
-
-              <div>
-                <ButtonComponent type="submit" :loading="isLoading" block> Send Mail </ButtonComponent>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="mx-auto h-10 w-auto" :src="themeConfig.logo" :alt="themeConfig.logoText">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot your password?</h2>
     </div>
-    <div class="relative hidden flex-1 lg:block w-full h-full">
-      <img
-        class="absolute inset-0 h-full w-full object-cover"
-        src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-        alt=""
-      />
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" @submit.prevent="onSubmit">
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="emailInput"
+            id="email"
+            name="email"
+            type="email"
+            label="E-mail"
+            autocomplete="email"
+            required
+            :error="emailError"
+            @focus="emailError = ''"
+          />
+        </div>
+
+        <div>
+          <ButtonComponent type="submit" :loading="isLoading" block> Send Mail </ButtonComponent>
+        </div>
+      </form>
+
+      <p class="mt-10 text-sm leading-6 text-content-secondary text-center">
+        {{ t('auth.HasNotAccount') }}
+        <NuxtLink 
+          to="/auth/register"
+          class="font-semibold text-global-blue-500 hover:text-global-blue-600"
+          >Get Started
+        </NuxtLink>
+      </p>
     </div>
   </div>
 </template>
