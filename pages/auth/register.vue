@@ -56,7 +56,7 @@ async function onSubmit() {
     isLoading.value = true;
     await authStore.register(given_name, family_name, emailInput.value, passwordInput.value, confirmPassword.value); 
     isLoading.value = false;
-    router.push('/');
+    router.push('/home');
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
@@ -91,7 +91,8 @@ async function onSubmit() {
 
 </script>
 <template>
-  <div class="flex min-h-full w-full overflow-x-auto pb-20 sm:!pb-0 sm:!overflow-hidden">
+
+  <!-- <div class="flex min-h-full w-full overflow-x-auto pb-20 sm:!pb-0 sm:!overflow-hidden">
     <div
       class="flex flex-1 flex-col justify-center px-4 py-12 sm:!px-6 lg:!flex-none lg:!px-20 xl:!px-60"
     >
@@ -195,6 +196,91 @@ async function onSubmit() {
         alt=""
       />
     </div>
+  </div> -->
+
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="mx-auto h-10 w-auto" :src="themeConfig.logo" :alt="themeConfig.logoText">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> {{ t('auth.RegisterHeader') }}</h2>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" @submit.prevent="onSubmit">
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="fullNameInput"
+            id="fullName"
+            name="fullName"
+            type="text"
+            label="Full Name"
+            placeholder="Enter Full Name"
+            autocomplete="name"
+            required
+            :error="fullNameError"
+            @focus="fullNameError = ''"
+          />
+        </div>
+
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="emailInput"
+            id="email"
+            name="email"
+            type="email"
+            label="E-mail"
+            placeholder="Enter Email"
+            autocomplete="email"
+            required
+            :error="emailError"
+            @focus="emailError = ''"
+          />
+        </div>
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="passwordInput"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter Pasword"
+            autocomplete="current-password"
+            label="Password"
+            required
+            :error="passwordError"
+            @focus="passwordError = ''"
+          />
+        </div>
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="confirmPassword"
+            id="confirm-password"
+            name="confirm-password"
+            label="Confirm Password"
+            placeholder="Confirm Your Password"
+            type="password"
+            autocomplete="confirm-password"
+            required
+            :error="confirmPasswordError"
+            @focus="confirmPasswordError = ''"
+          />
+        </div>
+
+        <div>
+          <ButtonComponent :loading="isLoading" type="submit" block> Sign Up </ButtonComponent>
+        </div>
+      </form>
+
+      <p class="mt-4 sm:mt-10 text-sm leading-6 text-content-secondary text-center">
+        {{ t('auth.HaveAccountText') }}
+        <NuxtLink
+          to="/auth/login"
+          class="font-semibold text-global-blue-500 hover:text-global-blue-600"
+          >{{ t('auth.LoginHeader') }}
+        </NuxtLink>
+      </p>
+    </div>
   </div>
 </template>
-stores/auth/tsstores/auth/ts
