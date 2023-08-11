@@ -4,7 +4,7 @@ export default [
   {
     id: 1,
     title: 'Home',
-    to: '/',
+    to: '/home',
     icon: HomeIcon
   },
 ]
