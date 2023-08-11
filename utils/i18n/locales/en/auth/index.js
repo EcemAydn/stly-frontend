@@ -1,5 +1,6 @@
 export default {
   'LoginHeader': 'Login',
+  'Sign in to your account': 'Sign in to your account',
   'LoginHeaderOrText': 'Or',
   'LoginHeaderLinkText': 'Register',
   'Password': 'Password',
