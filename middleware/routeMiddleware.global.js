@@ -33,7 +33,58 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     expiresIn = localStorage.getItem('expires_in') || sessionStorage.getItem('expires_in') || null;
   }
   
+  // const expiresAt = moment().unix();
+  // const isTokenExpired = expiresAt > expiresIn;
   const authStore = useAuthStore();
+
+  // if(authStore.currentUser) {
+    
+  //     if(token && !isTokenExpired) {
+  //       return navigateTo('/home');
+  //     }
+
+  //     if(!token && isTokenExpired) {
+  //       return navigateTo('/auth/register');
+  //     }
+      
+  //     if(!isTokenExpired){
+  //       axios.defaults.headers.common.Authorization = `Bearer ${token}`
+  //       await authStore.me()
+  //         .catch(() => {
+  //           deleteToken();
+  //           return navigateTo('/auth/register');
+  //         })
+  //     } 
+      
+  //     if(token && isTokenExpired) {
+  //       return navigateTo('/auth/register');
+  //     }
+
+  // }
+
+  // if(!authStore.currentUser) {
+
+  //     if(token && !isTokenExpired) {
+  //       return navigateTo('/home');
+  //     }
+
+  //     if(!token && isTokenExpired) {
+  //       return navigateTo('/auth/register');
+  //     }
+
+  //     if(!isTokenExpired){
+  //       axios.defaults.headers.common.Authorization = `Bearer ${token}`
+  //       await authStore.me()
+  //         .catch(() => {
+  //           deleteToken();
+  //           return navigateTo('/auth/register');
+  //         })
+  //     }
+
+  // }
+
+  
+
 
   if (token && expiresIn) {
     const expiresAt = moment().unix();
@@ -44,7 +95,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       deleteToken();
       appStore.isLoading = false;
       return navigateTo('/auth/register');
-      
     }
 
     if (!isTokenExpired && !authStore.currentUser) {
@@ -56,25 +106,27 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         });
       
         appStore.isLoading = false;
+
+      if(from.query.redirect) {
+        return navigateTo(from.query.redirect);
+      }
+
       if(to.meta.isAuth) {
+        console.log('arda');
         return navigateTo('/');
-      } else {
-        return navigateTo();
       }
     }
 
-    if (!isTokenExpired && to.meta.isAuth) {
-      console.log(5);
-    return navigateTo();
+    if (isTokenExpired && (to.meta.isAuth || to.path === '/')) {
+      return navigateTo('/auth/register');
     }
   }
 
-  if (!token && !to.meta.isAuth) {
-    console.log(6)
+  if (!token && !to.meta.isAuth && !to.path === '/') {
     appStore.isLoading = false;
     return navigateTo('/auth/register');
   }
 
     appStore.isLoading = false;
-    navigateTo();
+    navigateTo({ path: '/redirect', query: { redirect: to.fullPath } });
 })
