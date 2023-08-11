@@ -5,9 +5,9 @@
 
 <template>
   <div class="overflow-hidden bg-white w-full h-full relative">
-    <Loading v-if="appStore.isLoading" />
+    <!-- <Loading v-if="appStore.isLoading" /> -->
 
-    <TransitionGroup v-else name="fade">
+    <TransitionGroup name="fade">
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>
