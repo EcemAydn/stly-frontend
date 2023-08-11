@@ -1,5 +1,6 @@
 export default {
   'LoginHeader': 'Giriş yap',
+  'Sign in to your account': 'Hesabınıza giriş yap',
   'LoginHeaderOrText': 'Ya da',
   'LoginHeaderLinkText': 'yeni hesap oluştur',
   'Password': 'Şifre',
