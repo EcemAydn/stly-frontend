@@ -2,6 +2,9 @@
 import { useSubscriptionStore } from '@/stores/payment/payment';
 import { useAuthStore } from '@/stores/auth/auth';
 import { vMaska } from "maska"
+import VisaIcon from '@/components/icons/VisaIcon.vue'
+import MasterCardIcon from '@/components/icons/MasterCardIcon.vue'
+import CountryCode from '../../assets/country_codes.json'
 
 definePageMeta({
   isAuth: false
@@ -138,7 +141,6 @@ async function createSubscription() {
         <h2 class="text-xl font-medium">{{ $t('payment.Card Information') }}</h2>
         <p class="mt-1 text-sm text-text-primary-700">{{ $t('payment.cardInformationDescription') }}</p>
       </div>
-
       <div class="grid grid-cols-1 gap-4 md:grid-cols-6 mb-8">
         <div class="md:col-span-6">
           <InputComponent
@@ -149,9 +151,12 @@ async function createSubscription() {
               @focus="formErrors.cardHolderName = ''"
             />
         </div>
-        <div class="md:col-span-6">          
+        <div class="md:col-span-6"> 
+          <div class="flex items-center gap-1 pb-2">
+            <label class="text-sm font-medium">{{$t('payment.Credit Card Number')}}</label>   
+            <label class="text-content-secondary text-xs">(Only for Credit Card)</label>      
+          </div>
           <InputComponent
-              :label="$t('payment.Credit Card Number')"
               required
               v-maska
               data-maska="#### #### #### ####"
@@ -160,7 +165,12 @@ async function createSubscription() {
               minlength="16"
               :error="formErrors.cardNumber"
               @focus="formErrors.cardNumber = ''"
-            />
+            >
+            <template #append>
+              <VisaIcon class="w-5 h-5" />
+              <MasterCardIcon class="w-5 h-5" />
+            </template>
+          </InputComponent>
         </div>
 
         <div class="md:col-span-2">
@@ -211,7 +221,7 @@ async function createSubscription() {
 
       <div class="grid grid-cols-1 gap-4 md:grid-cols-6 mb-4">
         <div class="md:col-span-3">
-          <InputComponent
+          <!-- <InputComponent
             required
             v-maska
             data-maska="+###"
@@ -222,7 +232,18 @@ async function createSubscription() {
             v-model="countryCode"
             :error="formErrors.countryCode"
             @focus="formErrors.countryCode = ''" 
-          />
+          /> -->
+          <SelectComponent
+            label="Country Code"
+            :items="CountryCode"
+            v-model="countryCode"
+            :error="formErrors.countryCode"
+            @focus="formErrors.countryCode = ''" 
+          >
+            <template #selected>
+              {{ countryCode ? countryCode : 'Select' }}
+            </template>
+          </SelectComponent>
         </div>
         <div class="md:col-span-3">
           <InputComponent
