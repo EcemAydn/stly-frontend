@@ -1,63 +1,66 @@
-# Nuxt 3 Minimal Starter
+# Ocean Starter Kit
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Welcome to Ocean Starter Kit - the next-generation starter pack for modern web applications. Dive into seamless integration, cutting-edge technologies, and a structure that powers productivity.
 
-## Setup
+## Why Choose Ocean Starter Kit?
 
-Make sure to install the dependencies:
+- **Well-Structured:** Leveraging the best practices in web development, our project structure ensures a seamless experience for developers.
+- **Cutting-edge Technologies:** Stay ahead in the tech game with our meticulously chosen tech stack and features.
+- **Scalable:** Whether you're starting a small project or building a complex application, Ocean Starter Kit scales as you grow.
+- **Optimized for Performance:** Every element in the kit is optimized for performance, ensuring your application runs smoothly.
+- **Built with Love:** The Ocean Starter Kit is crafted with passion and dedication, ensuring the highest quality for your projects.
 
-```bash
-# npm
-npm install
+## Project Structure
 
-# pnpm
-pnpm install
+Ocean Starter Kit offers a well-organized directory structure, ensuring ease of access and scalability. Here's a sneak peek:
 
-# yarn
-yarn install
-```
+.
+├── assets
+│ ├── css
+│ ├── img
+│ └── country_codes.json
+├── components
+│ ├── icons
+│ ├── modal
+│ └── UI kit
+├── layout
+│ ├── blank.vue
+│ └── default.vue
+├── middleware
+│ ├── authenticatedMiddleware.js
+│ ├── notAuthenticatedMiddleware.js
+│ ├── redirectMiddleware.js
+│ └── tokenCheckMiddleware.global.js
+├── navigation
+│ └── index.js
+├── pages
+│ ├── auth
+│ ├── landing
+│ ├── payment
+│ ├── home.vue
+│ ├── profile.vue
+│ └── settings.vue
+├── public
+├── stores
+│ ├── auth
+│ ├── payment
+│ ├── alertStore
+│ └── app.js
+├── utils
+│ ├── i18n
+│ ├── axios.js
+│ ├── moment.js
+│ └── payment.js
+└── themeConfig.js
 
-## Development Server
 
-Start the development server on `http://localhost:3000`:
+## Dive In!
 
-```bash
-# npm
-npm run dev
+Ready to dive into the Ocean? Here's how to set sail:
 
-# pnpm
-pnpm run dev
+1. Clone the repository: `git clone repo-url`
+2. Install the treasures: `npm install`
+3. Set sail: `npm run serve`
 
-# yarn
-yarn dev
-```
+Dive deep with Ocean Starter Kit and bring your projects to life!
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
