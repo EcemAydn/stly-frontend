@@ -13,7 +13,7 @@ Welcome to Ocean Starter Kit - the next-generation starter pack for modern web a
 ## Project Structure
 
 Ocean Starter Kit offers a well-organized directory structure, ensuring ease of access and scalability. Here's a sneak peek:
-
+```bash
 .
 ├── assets
 │ ├── css
@@ -52,7 +52,7 @@ Ocean Starter Kit offers a well-organized directory structure, ensuring ease of 
 │ ├── moment.js
 │ └── payment.js
 └── themeConfig.js
-
+```
 
 ## Dive In!
 
