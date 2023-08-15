@@ -1,14 +1,15 @@
 # Ocean Starter Kit
 
-Welcome to Ocean Starter Kit - the next-generation starter pack for modern web applications. Dive into seamless integration, cutting-edge technologies, and a structure that powers productivity.
+Welcome to Ocean Starter Kit, the next-generation starter pack for modern web applications. Written in Nuxt 3, this pack offers seamless integration, cutting-edge technologies, and a structure designed for productivity, all empowered with our custom-built UI kit, RON-UI.
 
 ## Why Choose Ocean Starter Kit?
 
-- **Well-Structured:** Leveraging the best practices in web development, our project structure ensures a seamless experience for developers.
-- **Cutting-edge Technologies:** Stay ahead in the tech game with our meticulously chosen tech stack and features.
-- **Scalable:** Whether you're starting a small project or building a complex application, Ocean Starter Kit scales as you grow.
-- **Optimized for Performance:** Every element in the kit is optimized for performance, ensuring your application runs smoothly.
-- **Built with Love:** The Ocean Starter Kit is crafted with passion and dedication, ensuring the highest quality for your projects.
+- **Powered by Nuxt 3:** Built on the next-generation Vue.js framework, Nuxt 3, for a fast and optimized architecture.
+- **Custom UI Kit:** Featuring our aesthetically pleasing and user-friendly RON-UI.
+- **Flexible and Scalable:** Adapts to your needs, whether you're starting a small project or building a complex application.
+- **Performance Optimized:** Every element in the kit is optimized for performance, ensuring your application runs smoothly.
+
+Dive into new horizons with Ocean Starter Kit!
 
 ## Project Structure
 
