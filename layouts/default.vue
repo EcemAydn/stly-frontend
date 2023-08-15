@@ -6,6 +6,7 @@ import {
 import themeConfig from '../themeConfig';
 import navigation from '@/navigation';
 import SidebarNavigation from '@/components/SidebarNavigation.vue';
+import BadgeComponent from '@/components/BadgeComponent.vue';
 import SettingIcon from '@/components/icons/SettingIcon.vue';
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import BellIcon from '@/components/icons/BellIcon.vue';
@@ -15,6 +16,8 @@ import UserIcon from '@/components/icons/UserIcon.vue';
 import WalletIcon from '@/components/icons/WalletIcon.vue';
 import CalendarIcon from '@/components/icons/Calendar.vue';
 import { useAuthStore } from '@/stores/auth/auth';
+import TurkeyIcon from '@/components/icons/TurkeyIcon.vue';
+import EnglandIcon from '@/components/icons/EnglandIcon.vue';
 
 const { setLocale } = useI18n();
 const { locale, availableLocales } = useI18n();
@@ -25,6 +28,7 @@ const route = useRoute();
 const isMobile = ref(false);
 const mobileSidebarShow = ref(true);
 const language = ref(locale);
+const showNotification = ref(false);
 
 const footerLinks = [
   // {
@@ -58,6 +62,8 @@ function resizeListener() {
   isMobile.value = window.innerWidth < 768;
 }
 
+
+
 async function changeLocale(item) {
   setLocale(item);
 
@@ -78,7 +84,28 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex h-full w-full">
+  <div class="flex h-full w-full relative">
+    <Transition name="slide-x">
+    <NotificationComponent
+      v-if="showNotification"
+      description="Update your username and manage your account"
+      @close="showNotification = false"
+      buttonText="Mark all as read"
+    >
+      <!-- <div v-for="i in 30" class="p-4 text-xs flex gap-4 items-center border-b">
+        <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-md" />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt ducimus consequuntur eius laudantium?
+      </div> -->
+
+      <!-- v-if ile yönetilecek örneğin bildirim yoksa aşağıdaki svg gösterilebilir -->
+      <div class="w-full h-full flex flex-col justify-center items-center text-content-primary text-sm">
+        <img src="../public/NoFilesFound.svg" />
+        <div>
+          Notification is not found
+        </div>
+      </div>
+    </NotificationComponent>
+    </Transition>
     <SidebarNavigation
       :items="navigation"
       :size="$route.meta.defaultScale || themeConfig.sidebar.defaultScale"
@@ -98,8 +125,8 @@ onUnmounted(() => {
           />
         </div>
         <NuxtLink to="/profile" class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
-          <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-md" />
-              <div class="text-sm" v-if="!isMobile && !collapsed">{{ authStore.currentUser.email }}</div>
+          <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-full" />
+          <div class="text-sm" v-if="!isMobile && !collapsed">{{ authStore.currentUser.email }}</div>
         </NuxtLink>
       </div>
       
@@ -122,15 +149,15 @@ onUnmounted(() => {
         <div class="flex items-center justify-end gap-2 sm:gap-4">
           <!-- <SearchComponent v-if="!isMobile" class="w-full"></SearchComponent> -->
           
-          <div class="flex items-center gap-3">
-            <IconBase class="text-content-primary">
+          <div class="flex items-center gap-3" @click="showNotification = !showNotification" >
+            <IconBase class="text-content-primary cursor-pointer">
               <BellIcon />
             </IconBase>
           </div>
           <div>
             <DropdownComponent>
               <template #activator>
-                <AvatarComp color="raspberry">
+                <AvatarComp color="none">
                   <template #icon>
                     <IconBase viewBox="0 0 24 24">
                       <LanguageIcon />
@@ -142,8 +169,11 @@ onUnmounted(() => {
               <DropdownItemComponent v-for="(item, index) in availableLocales" :key="index" @click="changeLocale(item)" >
                 <div class="flex items-center gap-2 whitespace-nowrap">
 
-                  <IconBase>
-                    <SettingIcon />
+                  <IconBase v-if="item === 'Turkish'">
+                    <TurkeyIcon />
+                  </IconBase>
+                  <IconBase v-else>
+                    <EnglandIcon />
                   </IconBase>
                   {{ item }}
                 </div>
@@ -177,4 +207,22 @@ onUnmounted(() => {
 .fade-leave-from {
   opacity: 1;
 }
+
+.slide-x-enter-active,
+.slide-x-leave-active {
+  transition: all .7s;
+}
+
+.slide-x-enter-from,
+.slide-x-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-x-enter-to,
+.slide-x-leave-from {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
 </style>
