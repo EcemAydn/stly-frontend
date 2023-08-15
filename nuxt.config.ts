@@ -1,3 +1,4 @@
+import themeConfig from "./themeConfig"
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
@@ -17,8 +18,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/i18n',
     '@pinia/nuxt',
+    'nuxt-gtag'
   ],
   i18n: {
     vueI18n: './utils/i18n',
   },
+
+  gtag: themeConfig.GoogleGtagConfiguration,
 })

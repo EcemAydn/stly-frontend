@@ -11,6 +11,10 @@ export default {
   stores: {
     authProjectName: 'ecommerce',
     paymentReferenceCode: '77b9a037-6dbb-4934-a97a-105ad344ffa3',
+  },
+  GoogleGtagConfiguration: {
+    id: 'G-8GT9BBNT3F',
+    //...
   }
 
 }
