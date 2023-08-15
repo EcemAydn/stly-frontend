@@ -3,10 +3,12 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import themeConfig from '@/themeConfig';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useAlertStore } from '@/stores/alertStore';
 
 definePageMeta({
   layout: "blank",
   name: "forgotPassword",
+  middleware: ['not-authenticated-middleware'],
   isAuth: true,
 });
 
@@ -17,6 +19,7 @@ const emailError = ref('');
 const passwordError = ref('');
 
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 const { t } = useI18n();
 
 async function onSubmit() {
@@ -24,6 +27,7 @@ async function onSubmit() {
     isLoading.value = true;
     await authStore.forgotPassword(emailInput.value);
     isLoading.value = false;
+    alertStore.addAlert({ title: 'Email sent', type: 'success' });
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
@@ -41,7 +45,7 @@ async function onSubmit() {
     } else if (err.error) {
       error.value = err.error;
     } else {
-      console.log('arda',);
+      alertStore.addAlert({ title: err.error, type: 'negative' });
     }
 
     isLoading.value = false;

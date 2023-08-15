@@ -1,18 +1,21 @@
 <script setup>
 import { useSubscriptionStore } from '@/stores/payment/payment';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useAlertStore } from '@/stores/alertStore';
 import { vMaska } from "maska"
 import VisaIcon from '@/components/icons/VisaIcon.vue'
 import MasterCardIcon from '@/components/icons/MasterCardIcon.vue'
 import CountryCode from '../../assets/country_codes.json'
 
 definePageMeta({
-  isAuth: false
-});
+  middleware: ['authenticated-middleware'],
+})
 
-const isLoading = ref(false);
 const subscriptionStore = useSubscriptionStore();
 const userStore = useAuthStore();
+const alertStore = useAlertStore();
+
+const isLoading = ref(false);
 const cardHolderName = ref(null);
 const cardNumber = ref(null);
 const cardExpiryMonth = ref(null)
@@ -113,6 +116,7 @@ async function createSubscription() {
   })
     .then(async() => {
       await userStore.me();
+      alertStore.addAlert({ title: 'Successfully, you has been subscribe', type: 'success' });
       showModal.value = false;
     })
     .catch((err) => {
@@ -125,6 +129,7 @@ async function createSubscription() {
       } else if (err.error) {
         formError.value = err.error;
       } else {
+        alertStore.addAlert({ title: err.error, type: 'negative' });
       }
     })
     .finally(() => {
@@ -221,18 +226,6 @@ async function createSubscription() {
 
       <div class="grid grid-cols-1 gap-4 md:grid-cols-6 mb-4">
         <div class="md:col-span-3">
-          <!-- <InputComponent
-            required
-            v-maska
-            data-maska="+###"
-            placeholder="+12"
-            name="phone"
-            type="tel"
-            label="Country Code"
-            v-model="countryCode"
-            :error="formErrors.countryCode"
-            @focus="formErrors.countryCode = ''" 
-          /> -->
           <SelectComponent
             label="Country Code"
             :items="CountryCode"

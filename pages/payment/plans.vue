@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useSubscriptionStore } from '@/stores/payment/payment';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useAlertStore } from '@/stores/alertStore';
 import OceanModal from '@/components/modal/OceanModal.vue';
 import TabsComponent from '@/components/TabsComponent.vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
@@ -12,10 +13,12 @@ definePageMeta({
   isAuth: false,
 });
 
-const selectedHeader = ref('MONTHLY');
-const showModal = ref(false);
 const subscriptionStore = useSubscriptionStore();
 const userStore = useAuthStore();
+const alertStore = useAlertStore();
+
+const selectedHeader = ref('MONTHLY');
+const showModal = ref(false);
 const isLoading = ref(false);
 const isLoadingButton = ref(true);
 const cancelLoading = ref(false);
@@ -26,7 +29,9 @@ const tabs = ref([
   { text: 'Annual', value: 'YEARLY' },
 ]);
 
-
+definePageMeta({
+  middleware: ['authenticated-middleware'],
+})
 
 async function CardFunction(plan) {
   if (plan.text === 'Cancel') {
@@ -45,8 +50,10 @@ async function handleCancel() {
     await userStore.me();
     cancelLoading.value = false;
     showCanceling.value = false;
+    alertStore.addAlert({ title: 'Successfully canceled the subscription', type: 'success' });
   } catch (error) {
     cancelLoading.value = false;
+    alertStore.addAlert({ title: 'Failed to cancel the subscription', type: 'negative' });
   } finally {
     cancelLoading.value = false;
     isLoading.value = false;
@@ -100,7 +107,7 @@ onMounted(async () => {
       <CardComponent
         class="h-full"
         size="xxsmall"
-        :color="plan.text === 'Select' ? 'primary' : 'dark'"
+        :class="plan.text === 'Select' ? '' : 'ring-2'"
         line 
         v-for="plan in selectedPlans"
         :key="plan.id"
@@ -114,7 +121,7 @@ onMounted(async () => {
           <div class="flex flex-col gap-4 text-content-tertiary p-6">
             <div class="text-sm">Start exploring now and find out if it's the perfect fit for you.</div>
             <div class="flex items-end gap-2">
-              <div class="text-3xl font-semibold" :class="plan.text === 'Select' ? 'text-content-primary' : 'text-white'">${{ selectedHeader === 'MONTHLY' ? parseFloat(parseFloat(plan.price).toFixed(2)) : parseFloat(parseFloat(plan.price).toFixed(2))/12 }}</div>
+              <div class="text-3xl font-semibold text-content-primary">${{ selectedHeader === 'MONTHLY' ? parseFloat(parseFloat(plan.price).toFixed(2)) : parseFloat(parseFloat(plan.price).toFixed(2))/12 }}</div>
               <div class="text-md pb-1 text-content-tertiary">/month</div>
             </div>
             <div class="text-md"> Standart</div>

@@ -1,5 +1,9 @@
 <script setup>
 import { cva } from "class-variance-authority";
+import InfoCircle from "./icons/InfoCircle.vue"
+import WarningFill from './icons/WarningFill.vue'
+import CloseIcon from './icons/CloseIcon.vue';
+import WarningIcon from './icons/WarningIcon.vue';
 
 const alert = cva(["p-3 flex justify-between items-start rounded-md"], {
   variants: {

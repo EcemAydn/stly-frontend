@@ -4,13 +4,14 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 import themeConfig from '@/themeConfig';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useAlertStore } from '@/stores/alertStore';
+import GoogleIcon from '@/components/icons/GoogleIcon.vue';
 
 definePageMeta({
   layout: "blank",
   name: "Login",
   isAuth: true,
-  // middleware: ['route-middleware'],
-
+  middleware: ['not-authenticated-middleware'],
 });
 
 const { t } = useI18n()
@@ -25,12 +26,16 @@ const passwordError = ref('');
 
 const router = useRouter();
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
+
 async function onSubmit() {
   try {
     isLoading.value = true;
     await authStore.login(emailInput.value, passwordInput.value, rememberMe.value);
     isLoading.value = false;
     router.push('/home');
+    alertStore.addAlert({ title: 'Successfully, You has been logined', type: 'success' });
+
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
@@ -49,6 +54,7 @@ async function onSubmit() {
       error.value = err.error;
     } else {
       console.log('arda');
+      alertStore.addAlert({ title: 'Unexpected Error', type: 'negative' });
     }
 
     isLoading.value = false;
@@ -99,10 +105,24 @@ async function onSubmit() {
           </div>
         </div>
 
-
-      <div>
-        <ButtonComponent type="submit" :loading="isLoading" block> {{ t('auth.LoginHeader') }} </ButtonComponent>
-      </div>
+      <div class="flex flex-col gap-4">
+          <ButtonComponent :loading="isLoading" type="submit" block> {{ t('auth.LoginHeader') }}  </ButtonComponent>
+          <div class="flex items-center pt-2">
+            <hr class="w-full">
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+              <span class="bg-white px-6 text-gray-900 whitespace-nowrap">Or continue with</span>
+            </div>
+            <hr class="w-full">
+          </div>
+          <ButtonComponent :loading="isLoading" appearance="secondary" block>
+            Login With Google
+            <template #prepend>
+              <IconBase>
+                <GoogleIcon />
+              </IconBase>
+            </template>
+          </ButtonComponent>
+        </div>
       </form>
 
       <p class="mt-10 text-sm leading-6 text-content-secondary text-center">

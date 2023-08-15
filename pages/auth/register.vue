@@ -4,13 +4,17 @@ import themeConfig from '@/themeConfig';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth/auth'
 import { useRouter } from 'vue-router';
+import GoogleIcon from '@/components/icons/GoogleIcon.vue';
+import { useAlertStore } from '@/stores/alertStore';
 
 definePageMeta({
   layout: "blank",
   name: "Register",
   isAuth: true,
+  middleware: ['not-authenticated-middleware'],
 });
 
+const gtag = useGtag()
 const { t } = useI18n();
 const isLoading = ref(false);
 const error = ref('');
@@ -20,27 +24,32 @@ const passwordInput = ref('');
 const passwordError = ref('');
 const confirmPassword = ref('');
 const confirmPasswordError = ref('');
-const fullNameInput = ref('');
-const fullNameError = ref('');
+const firstNameInput = ref('');
+const lastNameInput = ref('');
+const firstNameError = ref('');
+const lastNameError = ref('');
 
 const router = useRouter();
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 
 async function onSubmit() {
-  const nameParts = fullNameInput.value.split(' ');
-  
-  if (nameParts.length < 2) {
-    fullNameError.value = 'Full name should contain a first and last name, separated by a space!';
-    return;
-  }
-
-  const [given_name, family_name] = nameParts;
   try {
+    const nameRegEx = /^\p{L}+$/u;
+    if (!firstNameInput.value) {
+        firstNameError.value = 'First name is required';
+        return;
+    } else if (!nameRegEx.test(firstNameInput.value)) {
+        firstNameError.value = 'First name should only contain alphabetic characters!';
+        return;
+    }
 
-    const nameRegEx = /^[A-Za-z\s]+$/;
-    if (!nameRegEx.test(given_name) || !nameRegEx.test(family_name)) {
-      fullNameError.value = 'Name should only contain alphabetic characters!';
-      return;
+    if (!lastNameInput.value) {
+        lastNameError.value = 'Last name is required';
+        return;
+    } else if (!nameRegEx.test(lastNameInput.value)) {
+        lastNameError.value = 'Last name should only contain alphabetic characters!';
+        return;
     }
 
     if (passwordInput.value !== confirmPassword.value) {
@@ -54,17 +63,26 @@ async function onSubmit() {
       return;
     }
     isLoading.value = true;
-    await authStore.register(given_name, family_name, emailInput.value, passwordInput.value, confirmPassword.value); 
+    await authStore.register(firstNameInput.value, lastNameInput.value, emailInput.value, passwordInput.value, confirmPassword.value); 
+    gtag('event', 'screen_view', {
+      app_name: themeConfig.name,
+      screen_name: 'On Register'
+    })
     isLoading.value = false;
     router.push('/home');
+    alertStore.addAlert({ title: 'Successfully, Account created', type: 'success' });
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
 
       // eslint-disable-next-line no-shadow
       errors.forEach((error) => {
-        if (error.path === 'given_name' || error.path === 'last_name') {
-          fullNameError.value = error.msg;
+        if (error.path === 'given_name') {
+          firstName.value = error.msg;
+        }
+        
+        if (error.path === 'family_name') {
+          firstName.value = error.msg;
         }
 
         if (error.path === 'confirm_password') {
@@ -81,8 +99,10 @@ async function onSubmit() {
       });
     } else if (err.error) {
       error.value = err.error;
+      alertStore.addAlert({ title: err.error, type: 'negative' });
+      console.log(err);
     } else {
-      console.log('arda')
+      console.log(err.error)
     }
 
     isLoading.value = false;
@@ -91,134 +111,40 @@ async function onSubmit() {
 
 </script>
 <template>
-
-  <!-- <div class="flex min-h-full w-full overflow-x-auto pb-20 sm:!pb-0 sm:!overflow-hidden">
-    <div
-      class="flex flex-1 flex-col justify-center px-4 py-12 sm:!px-6 lg:!flex-none lg:!px-20 xl:!px-60"
-    >
-    <InlineBanner v-if="error" type="negative" title="Error" :description="error"></InlineBanner>
-    <div class="mx-auto w-full max-w-sm lg:!w-96">
-        <div>
-          <img class="mx-auto h-12 w-auto mb-12" :src="themeConfig.logo" :alt="themeConfig.logoText" />
-          <h2
-            class="mt-8 text-3xl font-semibold leading-9 tracking-wide text-content-primary"
-          >
-            {{ t('auth.RegisterHeader') }}
-          </h2>
-          <p class="mt-2 text-sm leading-6 text-content-secondary">
-            {{ t('auth.HaveAccountText') }}
-            <RouterLink
-              to="/auth/login"
-              class="font-semibold text-global-blue-500 hover:text-global-blue-600"
-              >{{ t('auth.LoginHeader') }}</RouterLink
-            >
-          </p>
-        </div>
-
-        <div class="mt-10">
-          <div>
-            <form @submit.prevent="onSubmit" class="space-y-6">
-              <div>
-                <InputComponent
-                  :disabled="isLoading"
-                  v-model="fullNameInput"
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  label="Full Name"
-                  placeholder="Enter Full Name"
-                  autocomplete="name"
-                  required
-                  :error="fullNameError"
-                  @focus="fullNameError = ''"
-                />
-              </div>
-
-              <div>
-                <InputComponent
-                  :disabled="isLoading"
-                  v-model="emailInput"
-                  id="email"
-                  name="email"
-                  type="email"
-                  label="E-mail"
-                  placeholder="Enter Email"
-                  autocomplete="email"
-                  required
-                  :error="emailError"
-                  @focus="emailError = ''"
-                />
-              </div>
-
-              <div>
-                <InputComponent
-                  :disabled="isLoading"
-                  v-model="passwordInput"
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Enter Pasword"
-                  autocomplete="current-password"
-                  label="Password"
-                  required
-                  :error="passwordError"
-                  @focus="passwordError = ''"
-                />
-              </div>
-              <div>
-                <InputComponent
-                  :disabled="isLoading"
-                  v-model="confirmPassword"
-                  id="confirm-password"
-                  name="confirm-password"
-                  label="Confirm Password"
-                  placeholder="Confirm Your Password"
-                  type="password"
-                  autocomplete="confirm-password"
-                  required
-                  :error="confirmPasswordError"
-                  @focus="confirmPasswordError = ''"
-                />
-              </div>
-
-              <div>
-                <ButtonComponent :loading="isLoading" type="submit" block> Sign Up </ButtonComponent>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="relative hidden w-0 flex-1 lg:block">
-      <img
-        class="absolute inset-0 h-full w-full object-cover"
-        src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-        alt=""
-      />
-    </div>
-  </div> -->
-
-  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="flex min-h-full h-full flex-col justify-center px-6 pb-12 lg:px-8 overflow-y-auto sm:overflow-hidden">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="mx-auto h-10 w-auto" :src="themeConfig.logo" :alt="themeConfig.logoText">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> {{ t('auth.RegisterHeader') }}</h2>
+      <img class="mx-auto h-10 w-auto mt-20" :src="themeConfig.logo" :alt="themeConfig.logoText">
+      <h2 class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> {{ t('auth.RegisterHeader') }}</h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form class="space-y-6" @submit.prevent="onSubmit">
-        <div>
+        <div class="flex flex-col w-full sm:flex-row gap-4">
           <InputComponent
             :disabled="isLoading"
-            v-model="fullNameInput"
-            id="fullName"
-            name="fullName"
+            v-model="firstNameInput"
+            id="firstName"
+            name="firstName"
             type="text"
-            label="Full Name"
-            placeholder="Enter Full Name"
+            label="First Name"
+            placeholder="Enter First Name"
             autocomplete="name"
             required
-            :error="fullNameError"
-            @focus="fullNameError = ''"
+            :error="firstNameError"
+            @focus="firstNameError = ''"
+          />
+          <InputComponent
+            :disabled="isLoading"
+            v-model="lastNameInput"
+            id="lastName"
+            name="lastName"
+            type="text"
+            label="Last Name"
+            placeholder="Enter Last Name"
+            autocomplete="name"
+            required
+            :error="lastNameError"
+            @focus="lastNameError = ''"
           />
         </div>
 
@@ -268,8 +194,23 @@ async function onSubmit() {
           />
         </div>
 
-        <div>
+        <div class="flex flex-col gap-4">
           <ButtonComponent :loading="isLoading" type="submit" block> Sign Up </ButtonComponent>
+          <div class="flex items-center pt-2">
+            <hr class="w-full">
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+              <span class="bg-white px-6 text-gray-900 whitespace-nowrap">Or continue with</span>
+            </div>
+            <hr class="w-full">
+          </div>
+          <ButtonComponent :loading="isLoading" appearance="secondary" block>
+            Sign Up With Google
+            <template #prepend>
+              <IconBase>
+                <GoogleIcon />
+              </IconBase>
+            </template>
+          </ButtonComponent>
         </div>
       </form>
 

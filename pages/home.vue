@@ -68,7 +68,7 @@ const users = ref([
 // }
 
 definePageMeta({
-  // middleware: ['route-middleware'],
+  middleware: ['authenticated-middleware'],
 })
 </script>
 

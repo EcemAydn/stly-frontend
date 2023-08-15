@@ -12,6 +12,7 @@ definePageMeta({
   layout: "blank",
   path: "/",
   name: "Landing",
+  middleware: ['redirect-middleware'],
 });
 </script>
 <template>
@@ -22,9 +23,9 @@ definePageMeta({
           class="flex items-center gap-4 py-1 w-full justify-between text-content-primary font-medium sm:px-8"
         >
           <img :src="themeConfig.logo" alt="logo" class="w-12 h-12">
-          <NuxtLink to="/home">
+          <!-- <NuxtLink to="/home">
               Home
-            </NuxtLink>
+            </NuxtLink> -->
           <!-- <div class="items-center gap-8 hidden sm:flex">
             <NuxtLink to="/home">
               Home

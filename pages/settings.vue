@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useAlertStore } from '@/stores/alertStore';
 import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
@@ -11,14 +12,28 @@ const themeMod = ref(false);
 const isLoading = ref(false);
 
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 const { t } = useI18n();
+
+definePageMeta({
+  middleware: ['authenticated-middleware'],
+})
+
 async function logoutFunction() {
   isLoading.value = true;
   try {
     await authStore.logout();
     router.push({ name: 'Login' });
+    alertStore.addAlert({ 
+      title: 'Successfully logged out', 
+      type: 'success' 
+    });
   } catch (err) {
     console.log(err);
+    alertStore.addAlert({
+      title: 'Failed to log out',
+      type: 'negative'
+    })
   } finally {
     isLoading.value = false;
   }
@@ -27,7 +42,7 @@ async function logoutFunction() {
 </script>
 
 <template>
-<div class="">
+<div>
     <CardComponent border="secondary" size="full" class="p-12">
       <div class="flex flex-wrap gap-8">
         <div class="text-2xl">{{ $t('form.Settings') }}</div>

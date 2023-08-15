@@ -1,6 +1,10 @@
 <script setup>
-  import { useAppStore } from './stores/app';
-  const appStore = useAppStore();
+import { useAppStore } from './stores/app';
+import { useAlertStore } from './stores/alertStore';
+
+const appStore = useAppStore();
+const alertStore = useAlertStore();
+
 </script>
 
 <template>
@@ -12,6 +16,24 @@
         <NuxtPage />
       </NuxtLayout>
     </TransitionGroup>
+
+    <Teleport to="body">
+      <div class="pt-4 pr-2 z-[9999] fixed top-0 right-0 w-96">
+        <div class="relative flex flex-col gap-2">
+          <TransitionGroup name="slide-top">
+            <AlertComponent
+              v-for="(alert, index) in alertStore.alerts"
+              :key="alert.title + alert.type + index"
+              class="w-full shadow-md"
+              :style="{ position: 'absolute', top: 5 * index + 'px', right: 0, zIndex: 9999, opacity: index + 1 === alertStore.alerts.length ? '' : .7 }"
+              :title="alert.title"
+              :type="alert.type"
+              @click="alertStore.popAlert()"
+            />
+          </TransitionGroup>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
