@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const mainInstance = axios.create({
-  baseURL: 'https://auth.ronservice.co',
+  baseURL: 'https://auth2.ronservice.co/api',
 });
 
 export default mainInstance;
