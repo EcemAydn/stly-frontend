@@ -18,6 +18,7 @@ const card = cva(["rounded-lg flex flex-col w-full whitespace-wrap"], {
     border: {
       primary: "border-none",
       secondary: "border border-border-default-alpha shadow-bottom-200",
+      tertiary: "border border-border-default-alpha",
     },
     radius: {
       none: "rounded-none",
@@ -72,7 +73,7 @@ defineProps({
     type: String,
     default: "primary",
     validator(value) {
-      return ["primary", "secondary"].includes(value.toLocaleLowerCase());
+      return ["primary", "secondary", "tertiary"].includes(value.toLocaleLowerCase());
     },
   },
   radius: {

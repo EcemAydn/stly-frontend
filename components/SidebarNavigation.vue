@@ -48,6 +48,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+
+  title: {
+    type: String,
+    default: "Settings",
+  },
+
+  extra: {
+    type: Boolean,
+    default: false,
+  },
+  
+  detailItems: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 onMounted(() => {
@@ -134,7 +149,7 @@ watch(
 
 <template>
   <div
-    class="flex h-full text-content-primary z-30 bg-white"
+    class="flex h-full fixed sm:static text-content-primary z-40 bg-white"
     id="sidebar"
     ref="sidebar"
   >
@@ -214,6 +229,38 @@ watch(
         <slot
           name="footer"
           :collapsed="isMobileSidebar ? true : !isSidebarShow"
+        ></slot>
+      </div>
+    </div>
+    <div
+      v-if="extra"
+      class="flex flex-col h-full z-20 pt-2  bg-white border-r border-border-default transition-all ease-in-out duration-500 flex-shrink-0 text-content-primary"
+      :class="[
+        isMobileSidebar
+          ? isSidebarShow
+            ? 'w-64'
+            : 'w-0'
+          : isSidebarShow
+          ? 'w-64'
+          : 'w-64',
+      ]"
+    >
+    <div class="pl-11 p-4 text-[15px] font-semibold" :class="isMobileSidebar ? isSidebarShow ? 'block' : 'hidden' : 'block'">{{ title }}</div>
+
+      <div
+        class="w-full h-full px-2 overflow-y-auto overflow-x-hidden scroll-hide pt-1 whitespace-nowrap"
+      >
+        <NavLinks
+          @expandSidebar="handleExpandSidebar"
+          :items="detailItems"
+        ></NavLinks>
+      </div>
+
+      <div
+        class="flex items-center flex-shrink-0 pb-3 overflow-x-hidden pt-2"
+      >
+        <slot
+          name="footerDetails"
         ></slot>
       </div>
     </div>

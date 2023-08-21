@@ -1,5 +1,7 @@
 <script setup>
 import { computed, watch } from "vue";
+import ChevronLeft from '@/components/icons/ChevronLeft.vue'
+import ChevronRight from '@/components/icons/ChevronRight.vue'
 
 const props = defineProps({
   pageOptions: {

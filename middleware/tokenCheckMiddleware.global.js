@@ -41,6 +41,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       if(Date.now() / 1000 > expiresIn) {
         deleteToken();
+        console.log('token yok')
         return navigateTo('/auth/login');
       }
 
@@ -51,6 +52,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       await authStore.me()
         .catch(() => {
           deleteToken();
+          console.log('delete kısmı');
           return navigateTo('/auth/login');
         });
 

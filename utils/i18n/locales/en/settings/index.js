@@ -1,0 +1,15 @@
+export default {
+  'Settings': 'Settings',
+  'Reminders': 'Reminders',
+  'notifications to remind': 'These are notifications to remind you of updates you might have missed.',
+  'receive email': 'I want to receive email notifications.',
+  'cannot be reversed': 'Please note: Once you delete your account, this action is permanent and cannot be reversed.',
+  'Delete Your Account': 'Delete Your Account',
+  'identity and security': 'Please enter your password to ensure your security.',
+  'Password': 'Password',
+  'Confirm Password': 'Confirm Password',
+  'Cancel': 'Cancel',
+  'Password Required': 'Password Required',
+  'Danger Zone' : 'Danger Zone',
+  'Delete Account': 'Delete Account',
+}

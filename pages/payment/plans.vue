@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useSubscriptionStore } from '@/stores/payment/payment';
 import { useAuthStore } from '@/stores/auth/auth';
 import { useAlertStore } from '@/stores/alertStore';
+import { useI18n } from 'vue-i18n';
 import OceanModal from '@/components/modal/OceanModal.vue';
 import TabsComponent from '@/components/TabsComponent.vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
@@ -10,12 +11,16 @@ import CheckIcon from '@/components/icons/CheckIcon.vue'
 import LayerTwoIcon from '@/components/icons/LayerTwoIcon.vue';
 
 definePageMeta({
-  isAuth: false,
+  middleware: ['authenticated-middleware'],
+  defaultScale: 'mini',
+  scalable: false,
+  extra: true,
 });
 
 const subscriptionStore = useSubscriptionStore();
 const userStore = useAuthStore();
 const alertStore = useAlertStore();
+const { t } = useI18n();
 
 const selectedHeader = ref('MONTHLY');
 const showModal = ref(false);
@@ -25,13 +30,9 @@ const cancelLoading = ref(false);
 const showCanceling = ref(false);
 
 const tabs = ref([
-  { text: 'Monthly', value: 'MONTHLY' },
-  { text: 'Annual', value: 'YEARLY' },
+  { text: t('payment.Monthly'), value: 'MONTHLY' },
+  { text: t('payment.Yearly'), value: 'YEARLY' },
 ]);
-
-definePageMeta({
-  middleware: ['authenticated-middleware'],
-})
 
 async function CardFunction(plan) {
   if (plan.text === 'Cancel') {
@@ -66,14 +67,14 @@ const selectedPlans = computed(() => {
   if (selectedHeader.value === 'MONTHLY') {
     return subscriptionStore.plans.monthly.map((plan) => ({
       ...plan,
-      text: plan.id === activePricingPlanId ? 'Cancel' : 'Select',
+      text: plan.id === activePricingPlanId ? t('payment.Cancel') : t('payment.Select'),
       intent: plan.id === activePricingPlanId ? 'destructive' : 'none',
       appearance: plan.id === activePricingPlanId ? 'secondary' : 'primary',
     }));
   } else {
     return subscriptionStore.plans.yearly.map((plan) => ({
       ...plan,
-      text: plan.id === activePricingPlanId ? 'Cancel' : 'Select',
+      text: plan.id === activePricingPlanId ? t('payment.Cancel') : t('payment.Select'),
       intent: plan.id === activePricingPlanId ? 'destructive' : 'none',
       appearance: plan.id === activePricingPlanId ? 'secondary' : 'primary',
     }));
@@ -96,9 +97,10 @@ onMounted(async () => {
 
 </script>
 <template>
- <div v-if="!isLoadingButton" class="pb-20 flex flex-col gap-4 max-w-7xl mx-auto px-4">
+  <div v-if="!isLoadingButton" class="flex pb-12 flex-col gap-4 max-w-5xl mx-auto px-4 w-full">
+
     <!-- header -->
-    <HeaderComponent size="large" title="Plans & Pricing" description="Start small and scale up as you need" />
+    <HeaderComponent size="large" :title="$t('payment.Plans & Pricing')" :description="$t('payment.PaymentDescription')" />
     <div class="mx-auto bg-white p-2 rounded-md">
       <TabsComponent color="ghost" v-model="selectedHeader" :items="tabs" />
     </div>
@@ -107,7 +109,7 @@ onMounted(async () => {
       <CardComponent
         class="h-full"
         size="xxsmall"
-        :class="plan.text === 'Select' ? '' : 'ring-2'"
+        :class="plan.text === $t('payment.Select') ? '' : 'ring-2'"
         line 
         v-for="plan in selectedPlans"
         :key="plan.id"
@@ -115,18 +117,18 @@ onMounted(async () => {
         <template #title>
           <div class="flex items-center whitespace-nowrap" :class="selectedHeader === 'MONTHLY' ? 'gap-4' : 'gap-1'">
             {{ plan.name }}
-            <BadgeComponent v-if="plan.text !== 'Select'" class="font-normal text-xs" color="blue" badge-text="Your Plan" />
+            <BadgeComponent v-if="plan.text !== $t('payment.Select')" class="font-normal text-xs" color="blue" :badge-text="$t('payment.Your Plan')" />
           </div>
         </template>
           <div class="flex flex-col gap-4 text-content-tertiary p-6">
-            <div class="text-sm">Start exploring now and find out if it's the perfect fit for you.</div>
+            <div class="text-sm">{{ t('payment.subtitle') }}</div>
             <div class="flex items-end gap-2">
               <div class="text-3xl font-semibold text-content-primary">${{ selectedHeader === 'MONTHLY' ? parseFloat(parseFloat(plan.price).toFixed(2)) : parseFloat(parseFloat(plan.price).toFixed(2))/12 }}</div>
-              <div class="text-md pb-1 text-content-tertiary">/month</div>
+              <div class="text-md pb-1 text-content-tertiary">/{{ t('payment.month') }}</div>
             </div>
-            <div class="text-md"> Standart</div>
+            <div class="text-md">Standart</div>
             <div class="flex items-center gap-1">
-              <div class="text-md"> <b>{{ plan.credit }}</b> credits/{{ selectedHeader === 'MONTHLY' ? 'month' : 'year'}} </div>
+              <div class="text-md"> <b>{{ plan.credit }}</b> {{ t('payment.credits') }}/{{ selectedHeader === 'MONTHLY' ? t('payment.month') : t('payment.year') }} </div>
               <!-- <IconBase :width="15" :height="15" class="text-gray-400">
                 <InfoCircle />
               </IconBase> -->

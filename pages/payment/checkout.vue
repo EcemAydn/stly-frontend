@@ -9,7 +9,10 @@ import CountryCode from '../../assets/country_codes.json'
 
 definePageMeta({
   middleware: ['authenticated-middleware'],
-})
+  defaultScale: 'mini',
+  scalable: false,
+  extra: true,
+});
 
 const subscriptionStore = useSubscriptionStore();
 const userStore = useAuthStore();
@@ -61,10 +64,10 @@ async function createSubscription() {
     return;
   }
 
-  if (cardExpiryMonth.value.length !== 2) {
-    formErrors.value.cardExpiryMonth = 'Card Expiry Month must be 2 digits';
-    return;
-  }
+  if (cardExpiryMonth.value.length !== 2 || parseInt(cardExpiryMonth.value) > 12 || parseInt(cardExpiryMonth.value) < 1) {
+  formErrors.value.cardExpiryMonth = 'Card Expiry Month must be 2 digits and between 01 and 12';
+  return;
+}
 
   if (cardExpiryYear.value.length !== 4) {
     formErrors.value.cardExpiryYear = 'Card Expiry Year must be 4 digits';
@@ -91,8 +94,8 @@ async function createSubscription() {
   }
   isLoading.value = true;
   await subscriptionStore.createSubscription({
-    name: userStore.currentUser.givenName,
-    surname: userStore.currentUser.familyName,
+    name: userStore.currentUser.first_name,
+    surname: userStore.currentUser.last_name,
     pricingPlan: subscriptionStore.selectedPlan.id,
     cardHolderName: cardHolderName.value,
     cardNumber: cardNumber.value.replaceAll(' ', ''),
@@ -100,13 +103,13 @@ async function createSubscription() {
     expireYear: cardExpiryYear.value,
     cvc: cardCvc.value,
     email: userStore.currentUser.email,
-    shippingContactName: userStore.currentUser.givenName + ' ' + userStore.currentUser.familyName,
+    shippingContactName: userStore.currentUser.first_name + ' ' + userStore.currentUser.last_name,
     shippingCity: city.value,
     shippingDistrict: district.value,
     shippingCountry: country.value,
     shippingAddress: address.value,
     shippingZipCode: zipCode.value,
-    billingContactName: userStore.currentUser.givenName + ' ' + userStore.currentUser.familyName,
+    billingContactName: userStore.currentUser.first_name + ' ' + userStore.currentUser.last_name,
     billingCity: city.value,
     billingDistrict: district.value,
     billingCountry: country.value,
@@ -117,7 +120,6 @@ async function createSubscription() {
     .then(async() => {
       await userStore.me();
       alertStore.addAlert({ title: 'Successfully, you has been subscribe', type: 'success' });
-      showModal.value = false;
     })
     .catch((err) => {
       if (err.errors) {
@@ -138,28 +140,26 @@ async function createSubscription() {
 }
 </script>
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-10 py-4 md:py-4 gap-4 w-full overflow-auto">
-    <div class="md:col-span-1">
-    </div>
-    <CardComponent size="full" class="md:col-span-5 p-8 justify-center">
-      <div class="md:col-span-6 mb-4">
+  <div class="grid lg:grid-cols-5 py-4 gap-4 w-full overflow-auto">
+    <CardComponent size="full" class="col-span-3 p-8 justify-center">
+      <div class="col-span-6 mb-4">
         <h2 class="text-xl font-medium">{{ $t('payment.Card Information') }}</h2>
         <p class="mt-1 text-sm text-text-primary-700">{{ $t('payment.cardInformationDescription') }}</p>
       </div>
       <div class="grid grid-cols-1 gap-4 md:grid-cols-6 mb-8">
-        <div class="md:col-span-6">
+        <div class="col-span-6">
           <InputComponent
-              :label="$t('payment.First Name')"
+              :label="$t('payment.First Name')+ '*'"
               placeholder="John Doe"
               v-model="cardHolderName"
               :error="formErrors.cardHolderName"
               @focus="formErrors.cardHolderName = ''"
             />
         </div>
-        <div class="md:col-span-6"> 
+        <div class="col-span-6"> 
           <div class="flex items-center gap-1 pb-2">
-            <label class="text-sm font-medium">{{$t('payment.Credit Card Number')}}</label>   
-            <label class="text-content-secondary text-xs">(Only for Credit Card)</label>      
+            <label class="text-sm font-medium">{{$t('payment.Credit Card Number')}}*</label>   
+            <label class="text-content-secondary text-xs">({{ $t('payment.Only for Credit Card') }})</label>      
           </div>
           <InputComponent
               required
@@ -178,12 +178,12 @@ async function createSubscription() {
           </InputComponent>
         </div>
 
-        <div class="md:col-span-2">
+        <div class="col-span-6 lg:col-span-2">
           <InputComponent
             required
             v-maska
             data-maska="##"
-            label="Expiry Month*"
+            :label="$t('payment.Expiry Month')+ '*'"
             placeholder="07"
             v-model="cardExpiryMonth"
             class="w-full"
@@ -191,9 +191,9 @@ async function createSubscription() {
             @focus="formErrors.cardExpiryMonth = ''"
           />
         </div>
-        <div class="md:col-span-2">
+        <div class="col-span-6  lg:col-span-2">
           <InputComponent
-            label="Expiry Year*"
+            :label="$t('payment.Expiry Year')+ '*'"
             v-maska
             data-maska="20##"
             placeholder="2023"
@@ -203,7 +203,7 @@ async function createSubscription() {
             @focus="formErrors.cardExpiryYear = ''"
           />
         </div>
-        <div class="md:col-span-2">
+        <div class="col-span-6 lg:col-span-2">
           <InputComponent
             required
             name="cvc"
@@ -227,7 +227,7 @@ async function createSubscription() {
       <div class="grid grid-cols-1 gap-4 md:grid-cols-6 mb-4">
         <div class="md:col-span-3">
           <SelectComponent
-            label="Country Code"
+            :label="$t('payment.Country Code') + '*'"
             :items="CountryCode"
             v-model="countryCode"
             :error="formErrors.countryCode"
@@ -240,7 +240,7 @@ async function createSubscription() {
         </div>
         <div class="md:col-span-3">
           <InputComponent
-            label="Phone Number*"
+            :label="$t('payment.Phone Number') + '*'"
             required
             v-maska
             data-maska="### ### ## ##"
@@ -256,7 +256,7 @@ async function createSubscription() {
 
         <div class="md:col-span-3">
           <InputComponent
-            label="Country*"
+            :label="$t('payment.Country') + '*'"
             placeholder="Please enter Country"
             v-model="country"
             class="w-full"
@@ -267,7 +267,7 @@ async function createSubscription() {
 
         <div class="md:col-span-3">
           <InputComponent
-            label="City*"
+            :label="$t('payment.City') + '*'"
             placeholder="Please enter City"
             v-model="city"
             class="w-full"
@@ -278,7 +278,7 @@ async function createSubscription() {
 
         <div class="md:col-span-3">
           <InputComponent
-            label="State/Province"
+            :label="$t('payment.State') + '*'"
             placeholder="Please enter State"
             required
             name="state"
@@ -294,7 +294,7 @@ async function createSubscription() {
             required
             name="zipcode"
             v-maska
-            label="Zip Code"
+            :label="$t('payment.Postal Code') + '*'"
             v-model="zipCode"
             class="w-full"
             :error="formErrors.zipCode"
@@ -306,7 +306,7 @@ async function createSubscription() {
           <InputComponent
             required
             name="address"
-            label="Address"
+            :label="$t('payment.Address') + '*'"
             v-model="address"
             class="w-full"
             :error="formErrors.address"
@@ -317,7 +317,7 @@ async function createSubscription() {
       </div>
     </CardComponent>
 
-    <div v-if="subscriptionStore.selectedPlan" class="md:col-span-3">
+    <div v-if="subscriptionStore.selectedPlan" class="col-span-3 lg:col-span-2">
       <CardComponent>
         <div class="md:col-span-6 p-8">
           <h2 class="text-xl font-medium">{{ $t('payment.Order Summary') }}</h2>
@@ -376,7 +376,7 @@ async function createSubscription() {
 
           <div class="flex flex-col items-center justify-center w-full text-sm font-medium text-indigo-600">
             <span class="text-sm text-black mr-1"> {{ $t('payment.paymentOr') }} </span>
-            <NuxtLink class="cursor-pointer" to="/payment/plans">{{ $t('payment.Logout') }}</NuxtLink>
+            <NuxtLink class="cursor-pointer" to="/payment/plans">{{ $t('payment.Continue Billing') }}</NuxtLink>
           </div>
         </div>
       </CardComponent>

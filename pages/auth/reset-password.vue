@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import themeConfig from '@/themeConfig';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth/auth';
 import { useAlertStore } from '@/stores/alertStore';
+import themeConfig from '@/themeConfig';
 
 definePageMeta({
   layout: "blank",
@@ -14,20 +15,40 @@ definePageMeta({
 
 const isLoading = ref(false);
 const error = ref('');
-const emailInput = ref('');
-const emailError = ref('');
+const passwordInput = ref('');
+const confirmPassword = ref('');
 const passwordError = ref('');
+const confirmPasswordError = ref('');
 
+const router = useRouter();
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const { t } = useI18n();
 
 async function onSubmit() {
   try {
+
+    if (passwordInput.value !== confirmPassword.value) {
+      passwordError.value = 'Passwords do not match';
+      confirmPasswordError.value = 'Passwords do not match';
+      return;
+    }
+
+    if (passwordInput.value.length < 8) {
+      passwordError.value = 'Password should be at least 8 characters';
+      return;
+    }
+
     isLoading.value = true;
-    await authStore.forgotPassword(emailInput.value);
+    const queryCode = window.location.search.replace('?c=', '');
+    await authStore.resetPassword({
+      code: queryCode,
+      password: passwordInput.value,
+      confirmPassword: confirmPassword.value,
+    });
     isLoading.value = false;
-    alertStore.addAlert({ title: 'Email sent', type: 'success' });
+    router.push('/home');
+    alertStore.addAlert({ title: 'Password Reset', type: 'success' });
   } catch (err) {
     if (err.errors) {
       const { errors } = err;
@@ -57,7 +78,7 @@ async function onSubmit() {
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto" :src="themeConfig.logo" :alt="themeConfig.logoText">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot your password?</h2>
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Reset Password</h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -65,20 +86,36 @@ async function onSubmit() {
         <div>
           <InputComponent
             :disabled="isLoading"
-            v-model="emailInput"
-            id="email"
-            name="email"
-            type="email"
-            label="E-mail"
-            autocomplete="email"
+            v-model="passwordInput"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter Pasword"
+            autocomplete="current-password"
+            label="Password"
             required
-            :error="emailError"
-            @focus="emailError = ''"
+            :error="passwordError"
+            @focus="passwordError = ''"
+          />
+        </div>
+        <div>
+          <InputComponent
+            :disabled="isLoading"
+            v-model="confirmPassword"
+            id="confirm-password"
+            name="confirm-password"
+            label="Confirm Password"
+            placeholder="Confirm Your Password"
+            type="password"
+            autocomplete="confirm-password"
+            required
+            :error="confirmPasswordError"
+            @focus="confirmPasswordError = ''"
           />
         </div>
 
         <div>
-          <ButtonComponent type="submit" :loading="isLoading" block> Send Mail </ButtonComponent>
+          <ButtonComponent type="submit" :loading="isLoading" block>Reset</ButtonComponent>
         </div>
       </form>
 

@@ -15,7 +15,7 @@ const link = cva(
   {
     variants: {
       isSelected: {
-        true: "bg-action-primary-subtle-normal hover:bg-action-ghost-hover",
+        true: "bg-action-primary-subtle-normal hover:bg-action-ghost-hover text-action-primary-selected",
         false: ["hover:bg-action-ghost-hover"],
       },
       isDisabled: {
@@ -200,6 +200,7 @@ onUpdated(() => {
           </IconBase>
 
           <IconBase
+          v-if="item.icon"
             class="flex-shrink-0"
             :width="20"
             :height="20"

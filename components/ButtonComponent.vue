@@ -25,6 +25,7 @@ const button = cva(
         primary: [],
         secondary: [],
         inverted: [],
+        special: [],
       },
       intent: {
         none: [],
@@ -69,6 +70,13 @@ const button = cva(
         intent: "none",
         class:
           "border border-action-outline-normal text-action-neutral-normal bg-action-inverted-normal hover:text-action-neutral-hover hover:border-action-outline-hover active:text-action-neutral-active active:border-action-outline-active selected:text-action-neutral-selected selected:border-action-outline-selected disabled:text-action-neutral-normal disabled:border-action-outline-normal disabled:opacity-50 loading:text-action-neutral-normal loading:border-action-outline-normal loading:opacity-50",
+      },
+      {
+        variant: "default",
+        appearance: "special",
+        intent: "none",
+        class:
+          "border border-action-outline-normal text-action-neutral-normal bg-transparent hover:text-action-neutral-hover hover:border-action-outline-hover active:text-action-neutral-active active:border-action-outline-active selected:text-action-neutral-selected selected:border-action-outline-selected disabled:text-action-neutral-normal disabled:border-action-outline-normal disabled:opacity-50 loading:text-action-neutral-normal loading:border-action-outline-normal loading:opacity-50",
       },
       {
         variant: "default",
@@ -230,7 +238,7 @@ defineProps({
     type: String,
     default: "primary",
     validator(value) {
-      return ["primary", "secondary", "inverted", "reverse inverted"].includes(
+      return ["primary", "secondary", "inverted", "reverse inverted, special"].includes(
         value.toLocaleLowerCase()
       );
     },

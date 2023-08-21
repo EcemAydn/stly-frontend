@@ -4,6 +4,10 @@ import success from './success'
 import home from './home'
 import form from './form'
 import payment from './payment'
+import myplan from './myplan'
+import profile from './profile'
+import settings from './settings'
+import sessions from './sessions'
 
 export default {
   auth,
@@ -12,4 +16,8 @@ export default {
   home,
   form,
   payment,
+  myplan,
+  profile,
+  settings,
+  sessions
 }

@@ -20,6 +20,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  independent: {
+    type: Boolean,
+    default: false,
+  }
 });
 // const emit = defineEmits(["update:modelValue"]);
 
@@ -80,7 +84,8 @@ watchEffect((onInvalidate) => {
       type="button"
       @click="toggleDropdown"
       ref="dropdown"
-      class="text-content-tertiary pl-4 pr-3 py-2 w-full flex justify-between items-center bg-interaction-ghost-normal"
+      class="text-content-tertiary w-full flex justify-between items-center bg-interaction-ghost-normal"
+      :class="independent ? '' : 'pl-4 pr-3 py-2'"
       v-bind="$attrs"
     >
       <slot name="activator" />
@@ -91,7 +96,7 @@ watchEffect((onInvalidate) => {
           :class="[
             positionClass === 'dropdown-up' ? 'rounded-t-md' : 'rounded-b-md',
           ]"
-          class="absolute left-0 z-40 w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary bg-interaction-background-modeless shadow-bottom-300"
+          class="absolute left-0 z-[999] w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary bg-interaction-background-modeless shadow-bottom-300"
           ref="itemsContainer"
           :style="{
             top: positionClass.includes('dropdown-up')

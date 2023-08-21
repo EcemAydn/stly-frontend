@@ -40,10 +40,10 @@ defineProps({
           </div>
           <div
             v-if="description"
-            class="text-content-secondary"
+            class="text-content-secondary pt-2"
             :class="
               size === 'small'
-                ? 'text-xs'
+                ? 'text-sm'
                 : size === 'medium'
                 ? 'text-sm'
                 : 'text-base'

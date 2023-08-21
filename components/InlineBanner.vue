@@ -1,6 +1,12 @@
 <script setup>
 import { cva } from "class-variance-authority";
 import { ref } from "vue";
+import NeutralInfo from '@/components/icons/NeutralInfo.vue';
+import InformativeIcon from '@/components/icons/InformativeIcon.vue';
+import PositiveIcon from '@/components/icons/PositiveIcon.vue';
+import WarningInfo from '@/components/icons/WarningInfo.vue';
+import NegativeIcon from '@/components/icons/NegativeIcon.vue';
+import CloseIcon from '@/components/icons/CloseIcon.vue';
 
 const isOpen = ref(true);
 const banner = cva(["border w-full p-5 rounded-md"], {

@@ -6,8 +6,8 @@ import themeConfig from '../../themeConfig';
 
 const paymentReferenceCode = themeConfig.stores.paymentReferenceCode;
 
-export const useSubscriptionStore = defineStore('subs', () => {
-  const subscription = ref([]);
+export const useSubscriptionStore = defineStore('payment', () => {
+  const subscription = ref(null);
   const plans = ref({
     monthly: [],
     yearly: [],
@@ -49,10 +49,11 @@ function createSubscription(data) {
       payment.post(`/subscription?referenceCode=${paymentReferenceCode}`, data)
       .then((response) => {
         subscription.value = response.data.data;
-        authStore.update({user_data: {
+        authStore.update({
           subscription_id: response.data.data.subscription.id,
           subscription_status: 'ACTIVE',
-        }})
+          // subscription_credit: response.data.data.subscription.credit
+        })
         resolve(response.data);
       })
       .catch((error) => {
@@ -72,7 +73,7 @@ function get(){
   return new Promise((resolve, reject) => {
     try {
       const authStore = useAuthStore();
-      payment.get(`/subscription/${authStore.currentUser.details.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
+      payment.get(`/subscription/${authStore.currentUser.subscription.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
         subscription.value = response.data.data;
         resolve(response.data);
       }).catch((error) => {
@@ -95,7 +96,7 @@ function cancel(){
     console.log('cancel');
     try {
       const authStore = useAuthStore();
-      payment.delete(`/subscription/${authStore.currentUser.details.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
+      payment.delete(`/subscription/${authStore.currentUser.subscription.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
         subscription.value = response.data.data;
         resolve(response.data);
       }).catch((error) => {

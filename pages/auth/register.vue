@@ -77,11 +77,11 @@ async function onSubmit() {
 
       // eslint-disable-next-line no-shadow
       errors.forEach((error) => {
-        if (error.path === 'given_name') {
+        if (error.path === 'first_name') {
           firstName.value = error.msg;
         }
         
-        if (error.path === 'family_name') {
+        if (error.path === 'last_name') {
           firstName.value = error.msg;
         }
 

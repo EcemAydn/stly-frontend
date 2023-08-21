@@ -1,23 +1,24 @@
 <script setup>
-import { useRoute } from 'vue-router';
 import {
   computed, ref, onMounted, onUnmounted,
 } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth/auth';
+
 import themeConfig from '../themeConfig';
 import navigation from '@/navigation';
-import SidebarNavigation from '@/components/SidebarNavigation.vue';
-import BadgeComponent from '@/components/BadgeComponent.vue';
+import customItem from '@/navigation/custom';
+
 import SettingIcon from '@/components/icons/SettingIcon.vue';
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import BellIcon from '@/components/icons/BellIcon.vue';
 import LanguageIcon from '@/components/icons/LanguageIcon.vue';
 import IconBase from '@/components/icons/IconBase.vue';
-import UserIcon from '@/components/icons/UserIcon.vue';
 import WalletIcon from '@/components/icons/WalletIcon.vue';
 import CalendarIcon from '@/components/icons/Calendar.vue';
-import { useAuthStore } from '@/stores/auth/auth';
 import TurkeyIcon from '@/components/icons/TurkeyIcon.vue';
 import EnglandIcon from '@/components/icons/EnglandIcon.vue';
+import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 
 const { setLocale } = useI18n();
 const { locale, availableLocales } = useI18n();
@@ -25,6 +26,7 @@ const localePath = useLocalePath();
 const authStore = useAuthStore();
 
 const route = useRoute();
+const router = useRouter();
 const isMobile = ref(false);
 const mobileSidebarShow = ref(true);
 const language = ref(locale);
@@ -39,16 +41,11 @@ const footerLinks = [
   // },
   {
     id: 7,
-    title: 'Biling',
+    title: 'Billing',
     to: '/payment/plans',
     icon: WalletIcon,
   },
-  {
-    id: 8,
-    title:'Settings',
-    to: '/settings',
-    icon: SettingIcon,
-  },
+
 ];
 
 const pageTitle = computed(() => {
@@ -62,15 +59,28 @@ function resizeListener() {
   isMobile.value = window.innerWidth < 768;
 }
 
-
-
-async function changeLocale(item) {
+function changeLocale(item) {
   setLocale(item);
-
-  console.log(await localePath())
-
   // Change URL to correct language, ex: '/home' to '/fr/home'
   // await navigateTo(localePath(useRoute().path));
+}
+
+async function logoutFunction() {
+  try {
+    await authStore.logout();
+    router.push({ name: 'Login' });
+    alertStore.addAlert({ 
+      title: 'Successfully logged out', 
+      type: 'success' 
+    });
+  } catch (err) {
+    console.log(err);
+    alertStore.addAlert({
+      title: 'Failed to log out',
+      type: 'negative'
+    })
+  } finally {
+  }
 }
 
 onMounted(() => {
@@ -107,14 +117,17 @@ onUnmounted(() => {
     </NotificationComponent>
     </Transition>
     <SidebarNavigation
+      :extra="route.meta.extra"
       :items="navigation"
-      :size="$route.meta.defaultScale || themeConfig.sidebar.defaultScale"
+      :detail-items="customItem"
+      :size="route.meta.defaultScale"
       :logoText="themeConfig.logoText"
-      :defaultScale="$route.meta.defaultScale || themeConfig.sidebar.defaultScale"
-      :scalable="true"
+      defaultScale="mini"
+      :scalable="route.meta.scalable"
       :logo="themeConfig.logo"
       v-model="mobileSidebarShow"
     >
+    
     <template #footer="{ collapsed }">
       
       <div class="w-full px-2 gap-2 flex flex-col">
@@ -124,66 +137,96 @@ onUnmounted(() => {
             :items="footerLinks"
           />
         </div>
-        <NuxtLink to="/profile" class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
-          <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-full" />
-          <div class="text-sm" v-if="!isMobile && !collapsed">{{ authStore.currentUser.email }}</div>
-        </NuxtLink>
+          <DropdownComponent independent>
+            <template #activator>
+              <div class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
+                <img :src="authStore.currentUser.picture" class="w-8 rounded-full" />
+                <div class="text-sm text-content-primary" v-if="!isMobile && !collapsed">{{ authStore.currentUser.first_name.toUpperCase() + ' ' + authStore.currentUser.last_name.toUpperCase() }}</div>
+              </div>
+            </template>
+
+            <DropdownItemComponent >
+              <NuxtLink to="/profile" class="flex items-center gap-2 whitespace-nowrap md:w-40">
+                <IconBase>
+                  <SettingIcon />
+                </IconBase>
+                Account
+              </NuxtLink>
+            </DropdownItemComponent>
+
+            <DropdownItemComponent >
+              <div class="flex items-center gap-2" @click="logoutFunction">
+                <IconBase>
+                  <LogoutIcon />
+                </IconBase>
+                Logout
+              </div>
+            </DropdownItemComponent>
+          
+        </DropdownComponent>
       </div>
       
     </template>
     </SidebarNavigation>
-
-    <div class="flex flex-col w-full bg-[#f6f7f9] h-full">
+    <div class="flex  flex-col w-full bg-[#f6f7f9] h-full">
       <div
-        class="flex items-center py-0.5 w-full border-b relative"
-        :class="[isMobile ? 'px-2 justify-end' : 'justify-end px-2']"
+        class="flex items-center py-2 w-full border-b relative"
+        :class="[isMobile ? 'px-2 justify-end' : 'px-4']"
       >
         <IconBase
           id="menu-icon"
           @click="mobileSidebarShow = !mobileSidebarShow"
-          class="cursor-pointer h-full absolute left-4 top-0 z-50"
+          class="cursor-pointer h-full absolute left-4 top-0 z-20"
           v-if="isMobile"
         >
           <MenuIcon />
         </IconBase>
-        <div class="flex items-center justify-end gap-2 sm:gap-4">
-          <!-- <SearchComponent v-if="!isMobile" class="w-full"></SearchComponent> -->
+        <div class="flex items-center justify-end md:justify-between w-full gap-2 sm:gap-4">
+          <SearchComponent></SearchComponent>
           
-          <div class="flex items-center gap-3" @click="showNotification = !showNotification" >
-            <IconBase class="text-content-primary cursor-pointer">
-              <BellIcon />
-            </IconBase>
-          </div>
-          <div>
-            <DropdownComponent>
-              <template #activator>
-                <AvatarComp color="none">
-                  <template #icon>
-                    <IconBase viewBox="0 0 24 24">
+          <div class="flex items-center gap-3">
+
+            <!-- notification -->
+            <div class="flex items-center gap-3" @click="showNotification = !showNotification" >
+              <IconBase class="text-content-primary cursor-pointer">
+                <BellIcon />
+              </IconBase>
+            </div>
+
+            <!-- language -->
+            <div>
+              <DropdownComponent independent>
+                <template #activator>
+                  <button class="p-2">
+                    <IconBase viewBox="0 0 24 24" class="text-content-primary">
                       <LanguageIcon />
                     </IconBase>
-                  </template>
-                </AvatarComp>
-              </template>
+                  </button>
+                </template>
 
-              <DropdownItemComponent v-for="(item, index) in availableLocales" :key="index" @click="changeLocale(item)" >
-                <div class="flex items-center gap-2 whitespace-nowrap">
+                <DropdownItemComponent v-for="(item, index) in availableLocales" :key="index" @click="changeLocale(item)">
+                  <div class="flex items-center gap-2 mr-5">
 
-                  <IconBase v-if="item === 'Turkish'">
-                    <TurkeyIcon />
-                  </IconBase>
-                  <IconBase v-else>
-                    <EnglandIcon />
-                  </IconBase>
-                  {{ item }}
-                </div>
-              </DropdownItemComponent>
-            </DropdownComponent>
+                    <IconBase v-if="item === 'Turkish'">
+                      <TurkeyIcon />
+                    </IconBase>
+                    <IconBase v-else>
+                      <EnglandIcon />
+                    </IconBase>
+                    {{ item }}
+                  </div>
+                </DropdownItemComponent>
+              </DropdownComponent>
+            </div>
+
           </div>
+
+          <!-- bell -->
+
         </div>
       </div>
 
-      <div class="overflow-y-auto w-full mx-auto h-full p-5">
+      <div class="overflow-y-auto w-full mx-auto h-full p-2 lg:p-5">
         <transition name="fade">
           <slot />
         </transition>

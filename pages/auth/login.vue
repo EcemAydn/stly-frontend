@@ -37,27 +37,28 @@ async function onSubmit() {
     alertStore.addAlert({ title: 'Successfully, You has been logined', type: 'success' });
 
   } catch (err) {
-    if (err.errors) {
-      const { errors } = err;
+    if (err.validation_error) {
+      const { validation_error: validationError } = err;
+      console.log(validationError);
 
-      // eslint-disable-next-line no-shadow
-      errors.forEach((error) => {
-        if (error.path === 'password') {
-          passwordError.value = error.msg;
+      Object.keys(validationError).forEach((error) => {
+        if (error === 'password') {
+          passwordError.value = validationError[error][0];
         }
 
-        if (error.path === 'email') {
-          emailError.value = error.msg;
+        if (error === 'email') {
+          emailError.value = validationError[error][0];
         }
       });
     } else if (err.error) {
-      error.value = err.error;
+      alertStore.addAlert({ title: err.error, type: 'negative' });
     } else {
-      console.log('arda');
       alertStore.addAlert({ title: 'Unexpected Error', type: 'negative' });
     }
 
+  } finally {
     isLoading.value = false;
+    
   }
 }
 </script>
@@ -96,7 +97,7 @@ async function onSubmit() {
                 :label="t('Remember Me')" v-model="rememberMe" />
             </div>
             <div class="text-sm leading-6">
-              <NuxtLink to="/auth/forgotpassword">
+              <NuxtLink to="/auth/forgot-password">
                 <ButtonComponent variant="bare" size="small">
                   Forgot password?
                 </ButtonComponent>
