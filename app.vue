@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from 'vue';
 import { useAppStore } from './stores/app';
 import { useAlertStore } from './stores/alertStore';
 import { useLoadingStore } from './stores/loading';
@@ -10,6 +11,15 @@ const alertStore = useAlertStore();
 function handleLoad() {
   loadingStore.isLoading = false;
 }
+
+onMounted(() => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+  } else {
+      document.documentElement.classList.remove('dark');
+  }
+});
+
 </script>
 
 <template>

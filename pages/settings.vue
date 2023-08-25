@@ -78,17 +78,6 @@ watch(themeMod, () => {
     toggleDarkMode();
 });
 
-onMounted(() => {
-  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      themeMod.value = true;
-  } else {
-      document.documentElement.classList.remove('dark');
-      themeMod.value = false;
-  }
-});
-
-
 </script>
 
 <template>
