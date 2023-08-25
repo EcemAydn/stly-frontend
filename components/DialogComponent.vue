@@ -37,7 +37,7 @@ defineProps({
       class="flex items-center justify-between"
     >
       <div
-        class="text-content-primary font-semibold text-lg leading-8 flex gap-4 items-center"
+        class="text-content-primary dark:text-content-inverted-primary font-semibold text-lg leading-8 flex gap-4 items-center"
       >
         <slot name="titleIcon"></slot>
         <slot name="title">
@@ -56,7 +56,7 @@ defineProps({
     </div>
     <div
       v-if="$slots['content'] || content"
-      class="text-content-secondary text-sm"
+      class="text-content-secondary dark:text-content-inverted-secondary text-sm"
     >
       <slot name="content">
         {{ content }}

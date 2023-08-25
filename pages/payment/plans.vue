@@ -62,7 +62,7 @@ async function handleCancel() {
 }
 
 const selectedPlans = computed(() => {
-  const activePricingPlanId = subscriptionStore.subscription?.subscription?.pricingPlan?.id;
+  const activePricingPlanId = subscriptionStore.subscription?.pricingPlan?.id;
 
   if (selectedHeader.value === 'MONTHLY') {
     return subscriptionStore.plans.monthly.map((plan) => ({
@@ -101,7 +101,7 @@ onMounted(async () => {
 
     <!-- header -->
     <HeaderComponent size="large" :title="$t('payment.Plans & Pricing')" :description="$t('payment.PaymentDescription')" />
-    <div class="mx-auto bg-white p-2 rounded-md">
+    <div class="mx-auto bg-background-default dark:bg-cool-grey-alpha-900 p-2 rounded-md">
       <TabsComponent color="ghost" v-model="selectedHeader" :items="tabs" />
     </div>
     
@@ -123,7 +123,7 @@ onMounted(async () => {
           <div class="flex flex-col gap-4 text-content-tertiary p-6">
             <div class="text-sm">{{ t('payment.subtitle') }}</div>
             <div class="flex items-end gap-2">
-              <div class="text-3xl font-semibold text-content-primary">${{ selectedHeader === 'MONTHLY' ? parseFloat(parseFloat(plan.price).toFixed(2)) : parseFloat(parseFloat(plan.price).toFixed(2))/12 }}</div>
+              <div class="text-3xl font-semibold text-content-primary dark:text-content-inverted-primary">${{ selectedHeader === 'MONTHLY' ? parseFloat(parseFloat(plan.price).toFixed(2)) : parseFloat(parseFloat(plan.price).toFixed(2))/12 }}</div>
               <div class="text-md pb-1 text-content-tertiary">/{{ t('payment.month') }}</div>
             </div>
             <div class="text-md">Standart</div>

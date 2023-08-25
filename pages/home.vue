@@ -80,7 +80,7 @@ definePageMeta({
         <IconBase class="w-6 h-6 sm:!w-10 sm:!h-10" viewBox="0 0 512 512" color="blue">
           <SpaceShip />
         </IconBase>
-        <div class="text-xl sm:!text-3xl">
+        <div class="text-xl sm:!text-3xl text-content-primary dark:text-content-inverted-primary">
           Hey {{ authStore.currentUser.first_name.toUpperCase() }}!
         </div>
       </div>

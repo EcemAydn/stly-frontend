@@ -159,7 +159,7 @@ async function createSubscription() {
         <div class="col-span-6"> 
           <div class="flex items-center gap-1 pb-2">
             <label class="text-sm font-medium">{{$t('payment.Credit Card Number')}}*</label>   
-            <label class="text-content-secondary text-xs">({{ $t('payment.Only for Credit Card') }})</label>      
+            <label class="text-content-secondary dark:text-content-inverted-secondary text-xs">({{ $t('payment.Only for Credit Card') }})</label>      
           </div>
           <InputComponent
               required

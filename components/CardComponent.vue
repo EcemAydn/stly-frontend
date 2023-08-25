@@ -26,7 +26,7 @@ const card = cva(["rounded-lg flex flex-col w-full whitespace-wrap"], {
       full: "rounded-full",
     },
     color: {
-      primary: "bg-background-default",
+      primary: "bg-background-default dark:bg-background-inverted dark:bg-cool-grey-alpha-800",
       secondary: "bg-transparent",
       tertiary: "bg-[#ebeaff]",
       dark: "bg-[#101828]",
@@ -110,7 +110,7 @@ defineProps({
             :class="
               color === 'dark'
                 ? 'text-content-inverted-primary'
-                : 'text-content-primary'
+                : 'text-content-primary dark:text-content-inverted-primary'
             "
           >
             <slot name="title">
@@ -119,11 +119,11 @@ defineProps({
           </div>
           <div
             v-if="description"
-            class="text-content-secondary text-xs whitespace-wrap"
+            class="text-content-secondary dark:text-content-inverted-secondary text-xs whitespace-wrap"
             :class="
               color === 'dark'
                 ? 'text-content-inverted-primary'
-                : 'text-content-secondary'
+                : 'text-content-secondary dark:text-content-inverted-secondary'
             "
           >
             {{ description }}
@@ -139,7 +139,7 @@ defineProps({
       :class="
         color === 'dark'
           ? 'text-content-inverted-primary'
-          : 'text-content-primary'
+          : 'text-content-primary dark:text-content-inverted-primary'
       "
     >
       <slot>{{ content }}</slot>

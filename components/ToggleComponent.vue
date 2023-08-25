@@ -19,11 +19,11 @@ const button = cva(
     },
   }
 );
-const input = cva(["text-xs disabled:text-content-secondary text-center"], {
+const input = cva(["text-xs disabled:text-content-secondary dark:text-content-inverted-secondary text-center"], {
   variants: {
     isError: {
       true: "text-content-negative",
-      false: "text-content-secondary",
+      false: "text-content-secondary dark:text-content-inverted-secondary",
     },
 
     size: {
@@ -88,7 +88,7 @@ defineEmits(["update:modelValue"]);
       <label
         v-if="label"
         :disabled="disabled"
-        class="pl-2 text-sm text-content-primary disabled:text-content-primary/50"
+        class="pl-2 text-sm text-content-primary dark:text-content-inverted-primary disabled:text-content-primary dark:text-content-inverted-primary/50"
         >{{ label }}</label
       >
     </div>

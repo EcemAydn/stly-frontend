@@ -20,7 +20,7 @@ definePageMeta({
     <header class="flex h-full w-full overflow-y-auto">
       <nav class="flex flex-col w-full bg-[#f6f7f9] h-full">
         <div
-          class="flex items-center gap-4 py-1 w-full justify-between text-content-primary font-medium sm:px-8"
+          class="flex items-center gap-4 py-1 w-full justify-between text-content-primary dark:text-content-inverted-primary font-medium sm:px-8"
         >
           <img :src="themeConfig.logo" alt="logo" class="w-12 h-12">
           <!-- <NuxtLink to="/home">
@@ -36,7 +36,7 @@ definePageMeta({
             <div>
               <DropdownComponent>
                 <template #activator>
-                  <div class="flex font-medium items-center text-content-primary">
+                  <div class="flex font-medium items-center text-content-primary dark:text-content-inverted-primary">
                     Examples
                     <IconBase>
                       <ChevronDownSmall />
@@ -80,7 +80,7 @@ definePageMeta({
             </ButtonComponent>
           </NuxtLink>
           <h1 class="text-4xl font-bold">OCEAN STARTER KIT</h1>
-          <p class="text-content-secondary text-center">Beautifully designed, fully featured, and ready to go starter kit for Nuxt 3 and<br>Tailwind CSS.</p>
+          <p class="text-content-secondary dark:text-content-inverted-secondary text-center">Beautifully designed, fully featured, and ready to go starter kit for Nuxt 3 and<br>Tailwind CSS.</p>
           <div class="flex items-center gap-4">
             <NuxtLink to="/auth/register">
               <ButtonComponent>Get Started</ButtonComponent>
@@ -100,10 +100,10 @@ definePageMeta({
     <section class="bg-[#f6f7f9] flex flex-col lg:flex-row justify-between w-full gap-8 relative">
       <aside class="md:pl-32 px-4 md:pr-20 py-8 flex flex-col gap-4">
         <div class="text-3xl font-bold">Everything you need to create your app</div>
-        <div class="text-content-secondary font-medium">
+        <div class="text-content-secondary dark:text-content-inverted-secondary font-medium">
           Includes everything you need to build your app, including a customizable UI kit, authentication, and more.
         </div>
-        <div class="text-content-secondary flex items-start text-sm gap-2 py-4">
+        <div class="text-content-secondary dark:text-content-inverted-secondary flex items-start text-sm gap-2 py-4">
           <AvatarComp color="blue" class="pt-1">
             <template #icon>
               <IconBase viewBox="0 0 20 22">
@@ -115,7 +115,7 @@ definePageMeta({
             <b>Nuxt 3</b> The latest and greatest version of Nuxt.js, with a new file system based routing system and a new way to write your components.
           </div>
         </div>
-        <div class="text-content-secondary flex items-start text-sm gap-2 py-4">
+        <div class="text-content-secondary dark:text-content-inverted-secondary flex items-start text-sm gap-2 py-4">
           <AvatarComp color="blue" class="pt-1">
             <template #icon>
               <IconBase viewBox="0 0 16 20">
@@ -127,7 +127,7 @@ definePageMeta({
             <b>Tailwind CSS</b> A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup.
           </div>
         </div>
-        <div class="text-content-secondary flex items-start text-sm gap-2 py-4">
+        <div class="text-content-secondary dark:text-content-inverted-secondary flex items-start text-sm gap-2 py-4">
           <AvatarComp color="blue" class="pt-1">
             <template #icon>
               <IconBase viewBox="0 0 14 20">
@@ -139,7 +139,7 @@ definePageMeta({
             <b>Ronded UI</b> Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS.
           </div>
         </div>
-        <div class="text-content-secondary flex items-start text-sm gap-2 py-4">
+        <div class="text-content-secondary dark:text-content-inverted-secondary flex items-start text-sm gap-2 py-4">
           <AvatarComp color="blue" class="pt-1">
             <template #icon>
               <IconBase viewBox="0 0 24 24">
@@ -179,9 +179,9 @@ definePageMeta({
           <img src="../../assets/img/feature-2.png" class="md:w-1/2 m-4 rounded-xl md:rounded-l-xl" alt="Description of the Image">
         </div>
       </div>
-      <div class="flex justify-between items-center gap-2 text-content-secondary pt-20 pb-2 px-2 md:px-20 lg:px-40 font-medium text-xs md:text-sm">
+      <div class="flex justify-between items-center gap-2 text-content-secondary dark:text-content-inverted-secondary pt-20 pb-2 px-2 md:px-20 lg:px-40 font-medium text-xs md:text-sm">
         <div class="hidden md:block">Ocean Starter Kit</div>
-        <div class="">Ocean Starter Kit by <a href="https://github.com/Ron-Digital/ocean-starter-kit" class="text-content-primary font-semibold">Ron Digital</a>. All rights reserved.</div>
+        <div class="">Ocean Starter Kit by <a href="https://github.com/Ron-Digital/ocean-starter-kit" class="text-content-primary dark:text-content-inverted-primary font-semibold">Ron Digital</a>. All rights reserved.</div>
       </div>
     </footer>
   </main>

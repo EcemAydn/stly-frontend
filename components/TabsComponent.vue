@@ -2,7 +2,7 @@
 import { cva } from "class-variance-authority";
 const button = cva(
   [
-    "flex gap-2 items-center  py-2 focus:ring-2 focus:rounded text-action-neutral-normal disabled:text-action-neutral-normal/50",
+    "flex gap-2 items-center py-2 focus:ring-2 bg-red-500 focus:rounded text-action-neutral-normal disabled:text-action-neutral-normal/50",
   ],
   {
     variants: {
@@ -10,11 +10,11 @@ const button = cva(
         default:
           "border-b-2 border-transparent hover:border-action-neutral-subtle-hover active:border-action-primary-active",
         ghost:
-          "bg-action-ghost-normal hover:bg-action-ghost-hover rounded active:bg-action-ghost-active",
+          "bg-action-ghost-normal dark:bg-interaction-background-inverted-modeless hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover rounded active:bg-action-ghost-active dark:active:bg-action-ghost-inverted-active",
       },
       selected: {
         default: "text-action-primary-normal !border-action-primary-normal",
-        ghost: "font-semibold bg-action-ghost-selected",
+        ghost: "font-semibold bg-action-ghost-selected dark:bg-action-ghost-inverted-selected",
       },
     },
   }

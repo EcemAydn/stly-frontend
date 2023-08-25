@@ -6,7 +6,7 @@ const input = cva(["flex items-center gap-1 text-xs"], {
   variants: {
     isError: {
       true: "text-content-negative",
-      false: "text-content-secondary",
+      false: "text-content-secondary dark:text-content-inverted-secondary",
     },
   },
 });
@@ -90,7 +90,7 @@ watch(
     <div v-if="label" class="flex justify-between">
       <label
         class="font-medium leading-6"
-        :class="disabled ? 'text-content-primary/50' : 'text-content-primary'"
+        :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
         >{{ label }}</label
       >
       <div
@@ -102,7 +102,7 @@ watch(
     </div>
     <textarea
       ref="textAreaRef"
-      class="overflow-hidden transition-colors ease-in-out duration-300 border disabled:opacity-50 outline-none text-content-primary bg-interaction-background-form-field py-1 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal"
+      class="overflow-hidden transition-colors ease-in-out duration-300 border disabled:opacity-50 outline-none text-content-primary dark:text-content-inverted-primary bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless py-1 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal"
       :class="
         error
           ? 'border-interaction-border-alert'

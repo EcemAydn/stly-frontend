@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority";
 const badge = cva(["text-sm rounded-md px-2 whitespace-nowrap"], {
   variants: {
     emphasis: {
-      low: ["text-content-primary"],
+      low: ["text-content-primary dark:text-content-inverted-primary"],
       high: ["text-content-inverted-primary"],
     },
     color: {

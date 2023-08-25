@@ -5,7 +5,7 @@ import SearchIcon from "../components/icons/SearchIcon.vue";
 
 const search = cva(
   [
-    "flex gap-2 items-center text-content-primary w-full rounded-md disabled:text-content-tertiary",
+    "flex gap-2 items-center text-content-primary dark:text-content-inverted-primary w-full rounded-md disabled:text-content-tertiary",
   ],
   {
     variants: {
@@ -48,7 +48,7 @@ defineEmits(["update:modelValue"]);
  -->
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 ">
     <div :class="search({ border })">
       <IconBase>
         <SearchIcon />

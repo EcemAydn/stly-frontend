@@ -41,7 +41,7 @@ const footerLinks = [
   // },
   {
     id: 7,
-    title: 'Billing',
+    title: 'sidebar.Plans & Pricing',
     to: '/payment/plans',
     icon: WalletIcon,
   },
@@ -108,7 +108,7 @@ onUnmounted(() => {
       </div> -->
 
       <!-- v-if ile yönetilecek örneğin bildirim yoksa aşağıdaki svg gösterilebilir -->
-      <div class="w-full h-full flex flex-col justify-center items-center text-content-primary text-sm">
+      <div class="w-full h-full flex flex-col justify-center items-center text-content-primary dark:text-content-inverted-primary text-sm">
         <img src="../public/NoFilesFound.svg" />
         <div>
           Notification is not found
@@ -116,11 +116,13 @@ onUnmounted(() => {
       </div>
     </NotificationComponent>
     </Transition>
+
     <SidebarNavigation
       :extra="route.meta.extra"
+      title="sidebar.Settings"
       :items="navigation"
       :detail-items="customItem"
-      :size="route.meta.defaultScale"
+      :size="route.meta.defaultScale || 'normal'"
       :logoText="themeConfig.logoText"
       defaultScale="mini"
       :scalable="route.meta.scalable"
@@ -140,8 +142,8 @@ onUnmounted(() => {
           <DropdownComponent independent>
             <template #activator>
               <div class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
-                <img :src="authStore.currentUser.picture" class="w-8 rounded-full" />
-                <div class="text-sm text-content-primary" v-if="!isMobile && !collapsed">{{ authStore.currentUser.first_name.toUpperCase() + ' ' + authStore.currentUser.last_name.toUpperCase() }}</div>
+                <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-full" />
+                <div class="text-sm text-content-primary dark:text-content-inverted-primary" v-if="!isMobile && !collapsed">{{ authStore.currentUser.first_name.toUpperCase() + ' ' + authStore.currentUser.last_name.toUpperCase() }}</div>
               </div>
             </template>
 
@@ -150,7 +152,7 @@ onUnmounted(() => {
                 <IconBase>
                   <SettingIcon />
                 </IconBase>
-                Account
+                {{ $t('sidebar.Account') }}
               </NuxtLink>
             </DropdownItemComponent>
 
@@ -159,36 +161,35 @@ onUnmounted(() => {
                 <IconBase>
                   <LogoutIcon />
                 </IconBase>
-                Logout
+                {{ $t('sidebar.Logout') }}
               </div>
             </DropdownItemComponent>
-          
         </DropdownComponent>
       </div>
       
     </template>
     </SidebarNavigation>
-    <div class="flex  flex-col w-full bg-[#f6f7f9] h-full">
+    <div class="flex flex-col w-full bg-background-neutral-surface dark:bg-cool-grey-alpha-900 h-full">
       <div
-        class="flex items-center py-2 w-full border-b relative"
+        class="flex items-center py-2 w-full border-b bg-background-default dark:bg-cool-grey-alpha-900 border-border-default-alpha dark:border-border-neutral relative"
         :class="[isMobile ? 'px-2 justify-end' : 'px-4']"
       >
         <IconBase
           id="menu-icon"
           @click="mobileSidebarShow = !mobileSidebarShow"
-          class="cursor-pointer h-full absolute left-4 top-0 z-20"
+          class="cursor-pointer h-full absolute left-4 top-0 z-20 text-content-primary dark:text-content-inverted-primary"
           v-if="isMobile"
         >
           <MenuIcon />
         </IconBase>
-        <div class="flex items-center justify-end md:justify-between w-full gap-2 sm:gap-4">
+        <div class="flex items-center justify-end md:justify-between w-full gap-2 sm:gap-4 text-content-primary dark:text-content-inverted-primary">
           <SearchComponent></SearchComponent>
           
           <div class="flex items-center gap-3">
 
             <!-- notification -->
             <div class="flex items-center gap-3" @click="showNotification = !showNotification" >
-              <IconBase class="text-content-primary cursor-pointer">
+              <IconBase class="cursor-pointer">
                 <BellIcon />
               </IconBase>
             </div>
@@ -198,7 +199,7 @@ onUnmounted(() => {
               <DropdownComponent independent>
                 <template #activator>
                   <button class="p-2">
-                    <IconBase viewBox="0 0 24 24" class="text-content-primary">
+                    <IconBase viewBox="0 0 24 24" class="">
                       <LanguageIcon />
                     </IconBase>
                   </button>

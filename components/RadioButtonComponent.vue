@@ -10,7 +10,7 @@ const button = cva(
       checked: {
         true: "text-white bg-interaction-default-normal hover:bg-interaction-default-hover disabled:bg-interaction-default-normal/50",
         false:
-          "bg-interaction-background-form-field border-2 border-interaction-border-neutral-normal hover:border-interaction-border-hover disabled:border-interaction-border-neutral-normal/50",
+          "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless border-2 border-interaction-border-neutral-normal hover:border-interaction-border-hover disabled:border-interaction-border-neutral-normal/50",
       },
       isError: {
         true: "border-content-negative",
@@ -66,7 +66,7 @@ defineEmits(["update:modelValue"]);
     <label
       v-if="label"
       :disabled="disabled"
-      class="pl-2 text-sm text-content-primary disabled:text-content-primary/50"
+      class="pl-2 text-sm text-content-primary dark:text-content-inverted-primary disabled:text-content-primary dark:text-content-inverted-primary/50"
       >{{ label }}</label
     >
   </div>

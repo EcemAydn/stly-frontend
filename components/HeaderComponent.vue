@@ -1,7 +1,7 @@
 <script setup>
 import { cva } from "class-variance-authority";
 
-const titleSize = cva(["text-content-primary font-semibold"], {
+const titleSize = cva(["text-content-primary dark:text-content-inverted-primary font-semibold"], {
   variants: {
     size: {
       small: "text-lg",
@@ -29,7 +29,7 @@ defineProps({
 <template>
   <div>
     <div
-      class="py-4 w-full flex items-center justify-between text-black"
+      class="py-4 w-full flex items-center justify-between text-content-primary dark:text-content-inverted-primary"
       :class="$slots['toolbar'] ? 'border-b border-border-default' : ''"
     >
       <div class="flex items-center gap-2">
@@ -40,7 +40,7 @@ defineProps({
           </div>
           <div
             v-if="description"
-            class="text-content-secondary pt-2"
+            class="text-content-secondary dark:text-content-inverted-secondary pt-2"
             :class="
               size === 'small'
                 ? 'text-sm'
@@ -59,7 +59,7 @@ defineProps({
     </div>
     <div
       v-if="$slots['toolbar']"
-      class="px-6 py-4 w-full flex gap-2 items-center bg-background-default border-b border-border-default"
+      class="px-6 py-4 w-full flex gap-2 items-center bg-background-default dark:bg-background-inverted border-b border-border-default"
     >
       <slot name="toolbar"></slot>
     </div>

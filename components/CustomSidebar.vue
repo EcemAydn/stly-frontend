@@ -147,12 +147,12 @@ watch(
 
 <template>
   <div
-    class="flex h-full fixed sm:static text-content-primary z-40 bg-white"
+    class="flex h-full fixed sm:static text-content-primary dark:text-content-inverted-primary z-40 bg-white"
     id="sidebar"
     ref="sidebar"
   >
     <div
-      class="flex flex-col h-full bg-white border-r border-border-default transition-all ease-in-out duration-500 flex-shrink-0 text-content-primary z-30"
+      class="flex flex-col h-full bg-white border-r border-border-default transition-all ease-in-out duration-500 flex-shrink-0 text-content-primary dark:text-content-inverted-primary z-30"
       :class="[
         isMobileSidebar
           ? isSidebarShow
@@ -197,7 +197,7 @@ watch(
 
         <IconBase
           v-if="scalable && !isMobileSidebar"
-          class="cursor-pointer hover:text-content-primary flex-shrink-0 w-8 h-8 p-1.5"
+          class="cursor-pointer hover:text-content-primary dark:text-content-inverted-primary flex-shrink-0 w-8 h-8 p-1.5"
           :class="isSidebarShow ? '' : 'm-0.5'"
           @click="isSidebarShow = !isSidebarShow"
         >
@@ -234,7 +234,7 @@ watch(
     
     <div
       v-if="extra"
-      class="flex flex-col h-full z-20 pt-2  bg-white border-r border-border-default transition-all ease-in-out duration-500 flex-shrink-0 text-content-primary"
+      class="flex flex-col h-full z-20 pt-2  bg-white border-r border-border-default transition-all ease-in-out duration-500 flex-shrink-0 text-content-primary dark:text-content-inverted-primary"
       :class="[
         isMobileSidebar
           ? isSidebarShow

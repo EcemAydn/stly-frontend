@@ -52,7 +52,6 @@ async function deleteFunction(){
   }
 }
 
-
 // notificationEnabled
 watch(notificationEnabled, async (newValue) => {
     await authStore.update({

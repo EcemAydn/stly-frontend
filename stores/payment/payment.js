@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import payment from '../../utils/payment';
 import { useAuthStore } from '../auth/auth';
+import payment from '../../utils/payment';
 import themeConfig from '../../themeConfig';
 
 const paymentReferenceCode = themeConfig.stores.paymentReferenceCode;
@@ -48,7 +48,7 @@ function createSubscription(data) {
       const authStore = useAuthStore();
       payment.post(`/subscription?referenceCode=${paymentReferenceCode}`, data)
       .then((response) => {
-        subscription.value = response.data.data;
+        subscription.value = response.data.data.subscription;
         authStore.update({
           subscription_id: response.data.data.subscription.id,
           subscription_status: 'ACTIVE',
@@ -74,7 +74,7 @@ function get(){
     try {
       const authStore = useAuthStore();
       payment.get(`/subscription/${authStore.currentUser.subscription.subscription_id}?referenceCode=${paymentReferenceCode}`).then((response) => {
-        subscription.value = response.data.data;
+        subscription.value = response.data.data.subscription;
         resolve(response.data);
       }).catch((error) => {
         console.log(error);

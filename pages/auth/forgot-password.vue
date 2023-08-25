@@ -44,10 +44,10 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-background-default dark:bg-background-inverted">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto" :src="themeConfig.logo" :alt="themeConfig.logoText">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot your password?</h2>
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-content-primary dark:text-content-inverted-primary">Forgot your password?</h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -72,7 +72,7 @@ async function onSubmit() {
         </div>
       </form>
 
-      <p class="mt-10 text-sm leading-6 text-content-secondary text-center">
+      <p class="mt-10 text-sm leading-6 text-content-secondary dark:text-content-inverted-secondary text-center">
         {{ t('auth.HasNotAccount') }}
         <NuxtLink 
           to="/auth/register"

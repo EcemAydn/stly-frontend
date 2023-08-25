@@ -3,12 +3,12 @@ import { cva } from "class-variance-authority";
 import { onMounted, ref, watch } from "vue";
 
 const input = cva(
-  ["flex items-center gap-1 text-xs disabled:text-content-secondary"],
+  ["flex items-center gap-1 text-xs disabled:text-content-secondary dark:text-content-inverted-secondary"],
   {
     variants: {
       isError: {
         true: "text-content-negative",
-        false: "text-content-secondary",
+        false: "text-content-secondary dark:text-content-inverted-secondary",
       },
     },
   }
@@ -16,15 +16,15 @@ const input = cva(
 
 const textarea = cva(
   [
-    "transition-colors ease-in-out disabled:opacity-50 resize-none duration-300 border disabled:opacity-50 outline-none text-content-primary py-2 w-full rounded-md",
+    "transition-colors ease-in-out disabled:opacity-50 resize-none duration-300 border disabled:opacity-50 outline-none text-content-primary dark:text-content-inverted-primary py-2 w-full rounded-md",
   ],
   {
     variants: {
       color: {
         primary:
-          "bg-interaction-background-form-field focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal",
+          "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal",
         secondary: "bg-global-blue-100 border-none hover:bg-global-blue-200",
-        none: "bg-interaction-background-form-field border-none",
+        none: "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless border-none",
       },
       scalable: {
         true: "overflow-hidden",
@@ -134,7 +134,7 @@ watch(
     <div v-if="label" class="flex justify-between">
       <label
         class="font-medium leading-6"
-        :class="disabled ? 'text-content-primary/50' : 'text-content-primary'"
+        :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
         >{{ label }}</label
       >
       <div

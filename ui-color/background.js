@@ -1,6 +1,8 @@
 export default {
   "background-default": "#ffffff",
   "background-inverted": "#272E35",
+  "background-neutral-strong": "#555F6D",
+  "background-neutral-surface": "#FCFCFD",
   "background-neutral": "#555F6D",
   "background-informative": "#3062D4",
   "background-positive": "rgba(29, 124, 77, 1)",

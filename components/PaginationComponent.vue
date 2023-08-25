@@ -89,7 +89,7 @@ watch(pageDefault, () => {
 <template>
   <div
     v-if="inline"
-    class="bg-background-default text-sm w-full text-action-neutral-normal flex items-center justify-between gap-2"
+    class="bg-background-default dark:bg-background-inverted text-sm w-full text-action-neutral-normal flex items-center justify-between gap-2"
   >
     <div>
       <SelectComponent v-model="pageDefault" :items="pageOptions">
@@ -103,7 +103,7 @@ watch(pageDefault, () => {
         {{ Math.min((currentPage - 1) * pageDefault + 1, total) }} -
         {{ Math.min(currentPage * pageDefault, total) }} of {{ total }} results
       </div>
-      <div class="text-content-primary flex gap-1">
+      <div class="text-content-primary dark:text-content-inverted-primary flex gap-1">
         <IconBase>
           <ChevronLeft />
         </IconBase>

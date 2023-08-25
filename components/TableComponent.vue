@@ -61,9 +61,9 @@ function itemSelect(item, val) {
 defineEmits(["selected"]);
 </script>
 <template>
-  <table class="overflow-y-auto w-full text-content-primary">
+  <table class="overflow-y-auto w-full text-content-primary dark:text-content-inverted-primary">
     <thead
-      class="hidden text-sm sm:table-header-group font-bold bg-background-subtle-neutral border border-border-default"
+      class="hidden text-sm sm:table-header-group font-bold bg-background-subtle-neutral dark:bg-background-neutral-strong border border-border-default dark:border-border-default-alpha"
     >
       <tr class="text-left">
         <th v-if="selectTable" class="pl-6">
@@ -78,7 +78,7 @@ defineEmits(["selected"]);
         <th
           v-for="(header, index) in headers"
           :key="index"
-          class="text-content-primary py-2.5"
+          class="text-content-primary dark:text-content-inverted-primary py-2.5"
           :class="selectTable === false ? 'px-6' : 'px-3'"
         >
           {{ header.name }}
@@ -90,7 +90,7 @@ defineEmits(["selected"]);
       <tr
         v-for="(item, index) in items.slice(0, limit)"
         :key="index"
-        class="flex flex-col sm:table-row border sm:text-left relative bg-background-default transition duration-500 ease-in-out"
+        class="flex flex-col sm:table-row border border-border-default dark:border-border-default-alpha sm:text-left relative bg-background-default dark:bg-background-inverted transition duration-500 ease-in-out"
       >
         <td v-if="selectTable && mobilSelect" class="pl-6">
           <div>

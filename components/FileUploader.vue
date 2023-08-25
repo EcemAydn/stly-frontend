@@ -1,9 +1,17 @@
 <script setup>
 import { ref } from "vue";
 import { cva } from "class-variance-authority";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
+import PdfIcon from "@/components/icons/PdfIcon.vue";
+import ZipIcon from "@/components/icons/ZipIcon.vue";
+import ExcelIcon from "@/components/icons/ExcelIcon.vue";
+import DocumentIcon from "@/components/icons/DocumentIcon.vue";
+import WordIcon from "@/components/icons/WordIcon.vue";
+import UploadIcon from "@/components/icons/UploadIcon.vue";
+
 const file = cva(
   [
-    "text-content-primary flex gap-1 justify-between items-start bg-interaction-neutral-subtle-normal w-full rounded-md p-4",
+    "text-content-primary dark:text-content-inverted-primary flex gap-1 justify-between items-start bg-interaction-neutral-subtle-normal w-full rounded-md p-4",
   ],
   {
     variants: {
@@ -32,7 +40,7 @@ const file = cva(
         extended: false,
         thumbnail: false,
         class:
-          "bg-interaction-background-form-field border border-interaction-border-neutral-normal",
+          "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless border border-interaction-border-neutral-normal",
       },
       {
         inverted: false,
@@ -51,7 +59,7 @@ const file = cva(
         extended: true,
         thumbnail: true,
         class:
-          "bg-interaction-background-form-field border-interaction-border-neutral-normal",
+          "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless border-interaction-border-neutral-normal",
       },
     ],
   }
@@ -62,13 +70,14 @@ const filesInfo = ref([]);
 const isFileSelected = ref(false);
 
 const props = defineProps({
+  accept: {
+    type: String,
+  },
   label: {
     type: String,
-    default: "Label",
   },
   helper: {
     type: String,
-    default: "helper",
   },
   multiple: {
     type: Boolean,
@@ -90,6 +99,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  button: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -113,10 +130,10 @@ function onFileSelected(event) {
 function fileUpload(files) {
   if (props.multiple) {
     for (let i = 0; i < files.length; i++) {
-      filesInfo.value.push(createFileInfo(files[i]));
+      filesInfo.value.push(files[i]);
     }
   } else {
-    filesInfo.value = [createFileInfo(files[0])];
+    filesInfo.value = [files[0]];
   }
   emit("update:modelValue", filesInfo);
   isFileSelected.value = true;
@@ -156,15 +173,29 @@ function removeFile(index) {
 }
 </script>
 <template>
-  <div class="flex flex-col gap-2 text-sm text-content-primary w-full">
+  <div class="flex flex-col gap-1 text-sm text-content-primary dark:text-content-inverted-primary w-full">
     <p class="font-medium">{{ label }}</p>
     <div
-      v-show="multiple || !isFileSelected"
-      class="relative cursor-pointer p-6 border-2 border-dashed w-full text-sm text-content-primary border-interaction-border-neutral-normal bg-interaction-background-form-field rounded-md flex flex-col items-center gap-4"
+      v-show="multiple || !isFileSelected || button"
+      class=""
+      :class="button ? '' : 'relative cursor-pointer p-6 border-2 border-dashed w-full text-sm text-content-primary dark:text-content-inverted-primary border-interaction-border-neutral-normal bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless rounded-md'"
       @drop="onFileDropped"
       @dragover.prevent
       @click="handleInputClick"
     >
+    <div v-if="button">
+      <ButtonComponent :loading="loading" size="small" text="Choose file..." appearance="secondary" />
+      <input
+        ref="inputFile"
+        type="file"
+        :value="modelValue"
+        :accept="accept"
+        class="hidden"
+        :multiple="multiple"
+        @change="onFileSelected"
+      />
+    </div>
+    <div v-else class="flex flex-col items-center gap-4">
       <IconBase>
         <UploadIcon />
       </IconBase>
@@ -179,7 +210,7 @@ function removeFile(index) {
           </button>
           to upload
         </div>
-        <div class="text-xs text-content-secondary">
+        <div class="text-xs text-content-secondary dark:text-content-inverted-secondary">
           JPG, GIF or PNG. Max size of 800K
         </div>
         <input
@@ -187,15 +218,18 @@ function removeFile(index) {
           type="file"
           @input="(e) => $emit('update:modelValue', e.target.value)"
           :value="modelValue"
+          :accept="accept"
           class="hidden"
           :multiple="multiple"
           @change="onFileSelected"
         />
       </div>
     </div>
-    <p v-if="multiple">{{ helper }}</p>
+
+    </div>
+    <p v-if="multiple" class="text-content-secondary dark:text-content-inverted-secondary text-xs">{{ helper }}</p>
     <!-- :class="multiple ? 'px-4 py-2' : 'p-4'" -->
-    <div class="max-h-36 overflow-auto flex flex-col gap-2">
+    <div v-if="!button" class="max-h-36 overflow-auto flex flex-col gap-2">
       <div
         v-for="(fileInfo, index) in filesInfo"
         :key="index * 3123129"
@@ -235,7 +269,7 @@ function removeFile(index) {
             <div class="leading-6 truncate text-ellipsis">
               {{ fileInfo.fileName }}
             </div>
-            <div class="text-content-secondary text-xs">
+            <div class="text-content-secondary dark:text-content-inverted-secondary text-xs">
               {{ fileInfo.fileSize }}
             </div>
           </div>
@@ -257,6 +291,6 @@ function removeFile(index) {
         </div>
       </div>
     </div>
-    <p v-if="!multiple">{{ helper }}</p>
+    <p v-if="!multiple" class="text-content-secondary dark:text-content-inverted-secondary text-xs">{{ helper }}</p>
   </div>
 </template>

@@ -118,7 +118,7 @@ onUnmounted(() => {
       </div> -->
 
       <!-- v-if ile yönetilecek örneğin bildirim yoksa aşağıdaki svg gösterilebilir -->
-      <div class="w-full h-full flex flex-col justify-center items-center text-content-primary text-sm">
+      <div class="w-full h-full flex flex-col justify-center items-center text-content-primary dark:text-content-inverted-primary text-sm">
         <img src="../public/NoFilesFound.svg" />
         <div>
           Notification is not found
@@ -195,7 +195,7 @@ onUnmounted(() => {
 
             <!-- notification -->
             <div class="flex items-center gap-3" @click="showNotification = !showNotification" >
-              <IconBase class="text-content-primary cursor-pointer">
+              <IconBase class="text-content-primary dark:text-content-inverted-primary cursor-pointer">
                 <BellIcon />
               </IconBase>
             </div>
@@ -205,7 +205,7 @@ onUnmounted(() => {
               <DropdownComponent independent>
                 <template #activator>
                   <button class="p-2">
-                    <IconBase viewBox="0 0 24 24" class="text-content-primary">
+                    <IconBase viewBox="0 0 24 24" class="text-content-primary dark:text-content-inverted-primary">
                       <LanguageIcon />
                     </IconBase>
                   </button>

@@ -6,7 +6,7 @@ const input = cva(["flex items-center gap-1 text-xs"], {
   variants: {
     isError: {
       true: "text-content-negative",
-      false: "text-content-secondary",
+      false: "text-content-secondary dark:text-content-inverted-secondary",
     },
   },
 });
@@ -45,26 +45,26 @@ defineEmits(["update:modelValue"]);
     * Error-message: varsa error yap dizaynı
     * Info: altta yazı olcak.
 
- -->
+-->
 
 <template>
   <div class="flex flex-col gap-2 select-none">
     <label
       v-if="label"
       class="text-sm font-medium leading-6"
-      :class="disabled ? 'text-content-primary/50' : 'text-content-primary'"
+      :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50 dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
       >{{ label }}</label
     >
     <div
       @click="() => inputTag.focus()"
-      class="flex gap-2 transition-all ease-in-out duration-300 items-center border bg-interaction-background-form-field py-2 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal cursor-text"
+      class="flex gap-2 transition-all ease-in-out duration-300 items-center border bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless py-2 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal cursor-text"
       :class="
         error
           ? 'border-interaction-border-alert'
           : 'border-interaction-border-neutral-normal' +
             (!disabled
-              ? ' hover:border-interaction-border-hover text-content-primary'
-              : 'disabled:border-interaction-border-neutral-normal text-content-primary/50')
+              ? ' hover:border-interaction-border-hover text-content-primary dark:text-content-inverted-primary'
+              : 'disabled:border-interaction-border-neutral-normal text-content-primary dark:text-content-inverted-primary/50 dark:text-content-inverted-primary/50')
       "
     >
       <slot name="prepend"></slot>

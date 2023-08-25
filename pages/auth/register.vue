@@ -111,10 +111,10 @@ async function onSubmit() {
 
 </script>
 <template>
-  <div class="flex min-h-full h-full flex-col justify-center px-6 pb-12 lg:px-8 overflow-y-auto sm:overflow-hidden">
+  <div class="flex min-h-full h-full flex-col justify-center bg-background-default dark:bg-background-inverted px-6 pb-12 lg:px-8 overflow-y-auto sm:overflow-hidden">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto mt-20" :src="themeConfig.logo" :alt="themeConfig.logoText">
-      <h2 class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> {{ t('auth.RegisterHeader') }}</h2>
+      <h2 class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-content-primary dark:text-content-inverted-primary"> {{ t('auth.RegisterHeader') }}</h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -199,7 +199,7 @@ async function onSubmit() {
           <div class="flex items-center pt-2">
             <hr class="w-full">
             <div class="relative flex justify-center text-sm font-medium leading-6">
-              <span class="bg-white px-6 text-gray-900 whitespace-nowrap">Or continue with</span>
+              <span class="bg-background-default dark:bg-background-inverted px-6 text-content-primary dark:text-content-inverted-primary whitespace-nowrap">Or continue with</span>
             </div>
             <hr class="w-full">
           </div>
@@ -214,7 +214,7 @@ async function onSubmit() {
         </div>
       </form>
 
-      <p class="mt-4 sm:mt-10 text-sm leading-6 text-content-secondary text-center">
+      <p class="mt-4 sm:mt-10 text-sm leading-6 text-content-secondary dark:text-content-inverted-secondary text-center">
         {{ t('auth.HaveAccountText') }}
         <NuxtLink
           to="/auth/login"

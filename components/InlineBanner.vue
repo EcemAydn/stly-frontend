@@ -96,7 +96,7 @@ defineProps({
           ? 'text-sm'
           : 'text-md' + type === 'special'
           ? 'text-blue-600/70'
-          : 'text-content-primary'
+          : 'text-content-primary dark:text-content-inverted-primary'
       "
     >
       {{ description }}

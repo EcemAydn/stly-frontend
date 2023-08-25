@@ -24,7 +24,7 @@ defineProps({
       <div class="flex justify-between items-center py-1 px-8 w-full border-b">
         <SearchComponent> </SearchComponent>
         <div class="flex items-center gap-3">
-          <IconBase width="28" height="28" class="text-content-primary">
+          <IconBase width="28" height="28" class="text-content-primary dark:text-content-inverted-primary">
             <BellIcon />
           </IconBase>
           <DropdownComponent>

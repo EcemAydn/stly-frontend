@@ -8,11 +8,11 @@ const isOpen = ref(false);
 const select = ref(null);
 const itemsContainer = ref(null);
 
-const input = cva(["text-xs disabled:text-content-secondary text-left"], {
+const input = cva(["text-xs disabled:text-content-secondary dark:text-content-inverted-secondary text-left"], {
   variants: {
     isError: {
       true: "text-content-negative",
-      false: "text-content-secondary",
+      false: "text-content-secondary dark:text-content-inverted-secondary",
     },
   },
 });
@@ -130,7 +130,7 @@ watchEffect((onInvalidate) => {
       v-if="label"
       :disabled="disabled"
       class="font-medium leading-6"
-      :class="disabled ? 'text-content-primary/50' : 'text-content-primary'"
+      :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
       >{{ label }}</label
     >
     <button
@@ -139,7 +139,7 @@ watchEffect((onInvalidate) => {
       @click="toggleSelect"
       :disabled="disabled"
       ref="select"
-      class="text-content-tertiary pl-4 pr-3 py-2 w-full flex justify-between items-center border bg-interaction-background-form-field focus:ring disabled:opacity-50 border-interaction-border-neutral-normal rounded-md"
+      class="text-content-tertiary pl-4 pr-3 py-2 w-full flex justify-between items-center border bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless focus:ring disabled:opacity-50 border-interaction-border-neutral-normal rounded-md"
       :class="{
         'border-content-negative ring-offset-1 ring-offset-white': !!error,
         'hover:border-interaction-border-hover': !error,
@@ -164,7 +164,7 @@ watchEffect((onInvalidate) => {
           :class="[
             positionClass === 'dropdown-up' ? 'rounded-t-md' : 'rounded-b-md',
           ]"
-          class="absolute overflow-y-auto max-h-[300px] scroll-hide left-0 z-50 w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary bg-interaction-background-modeless shadow-bottom-300"
+          class="absolute overflow-y-auto max-h-[300px] scroll-hide left-0 z-50 w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary dark:text-content-inverted-primary bg-interaction-background-modeless shadow-bottom-300"
           ref="itemsContainer"
           :style="{
             top:

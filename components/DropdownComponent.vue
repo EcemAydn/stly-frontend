@@ -84,7 +84,7 @@ watchEffect((onInvalidate) => {
       type="button"
       @click="toggleDropdown"
       ref="dropdown"
-      class="text-content-tertiary w-full flex justify-between items-center bg-interaction-ghost-normal"
+      class="text-content-tertiary dark:text-content-tertiary w-full flex justify-between items-center bg-background-default dark:bg-cool-grey-alpha-900 "
       :class="independent ? '' : 'pl-4 pr-3 py-2'"
       v-bind="$attrs"
     >
@@ -96,7 +96,7 @@ watchEffect((onInvalidate) => {
           :class="[
             positionClass === 'dropdown-up' ? 'rounded-t-md' : 'rounded-b-md',
           ]"
-          class="absolute left-0 z-[999] w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary bg-interaction-background-modeless shadow-bottom-300"
+          class="absolute left-0 z-[999] w-fit border px-2 py-1.5 border-border-default-alpha text-content-primary dark:text-content-inverted-primary bg-interaction-background-modeless dark:bg-interaction-background-inverted-modeless shadow-bottom-300"
           ref="itemsContainer"
           :style="{
             top: positionClass.includes('dropdown-up')

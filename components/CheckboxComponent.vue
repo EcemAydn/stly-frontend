@@ -13,7 +13,7 @@ const button = cva(
       checked: {
         true: "text-white bg-interaction-default-normal hover:bg-interaction-default-hover disabled:bg-interaction-default-normal/50",
         false:
-          "bg-interaction-background-form-field border-2 border-interaction-border-neutral-normal hover:border-interaction-border-hover disabled:border-interaction-border-neutral-normal/50",
+          "bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless border-2 border-interaction-border-neutral-normal hover:border-interaction-border-hover disabled:border-interaction-border-neutral-normal/50",
       },
       isError: {
         true: "border-content-negative",
@@ -53,7 +53,10 @@ defineEmits(["update:modelValue"]);
       :disabled="disabled"
       :class="button({ checked: modelValue, isError: !!error })"
     >
-      <IconBase class="text-interaction-inverted-normal">
+      <IconBase
+        class="text-interaction-inverted-normal"
+        :class="modelValue ? 'block' : 'hidden'"
+      >
         <CheckSmall v-if="check" />
         <MinusIcon v-if="minus" />
       </IconBase>
@@ -64,7 +67,7 @@ defineEmits(["update:modelValue"]);
     <label
       v-if="label || $slots['label']"
       class="pl-2 text-sm"
-      :class="disabled ? 'text-content-primary/50' : 'text-content-primary'"
+      :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
     >
       <slot name="label">
         {{ label }}

@@ -8,6 +8,7 @@ import myplan from './myplan'
 import profile from './profile'
 import settings from './settings'
 import sessions from './sessions'
+import sidebar from './sidebar'
 
 export default {
   auth,
@@ -19,5 +20,6 @@ export default {
   myplan,
   profile,
   settings,
-  sessions
+  sessions,
+  sidebar,
 }

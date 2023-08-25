@@ -139,6 +139,7 @@ export const useAuthStore = defineStore('auth', () => {
       const apiKey = import.meta.env.VITE_APP_TOKEN_KEY;
       const token = localStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY) || sessionStorage.getItem(import.meta.env.VITE_APP_TOKEN_KEY);
       axios.get('me', { headers: { token:`${apiKey}`, Authorization: `Bearer ${token}` }}).then((response) => {
+        console.log(response.data.data);
         currentUser.value = response.data.data.user;
         resolve(response);
       }).catch((error) => {

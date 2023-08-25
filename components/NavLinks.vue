@@ -11,32 +11,32 @@ const route = useRoute();
 const isCollapsed = ref([true]);
 
 const link = cva(
-  "w-full mx-3 select-none rounded-[6px] focus:ring-2 focus:ring-interaction-default-normal text-action-neutral-normal text-sm",
+  "w-full mx-3 select-none rounded-[6px] focus:ring-2 focus:ring-interaction-default-normal text-action-neutral-normal dark:text-action-inverted-normal text-sm transition-all ease-in-out duration-300",
   {
     variants: {
       isSelected: {
-        true: "bg-action-primary-subtle-normal hover:bg-action-ghost-hover text-action-primary-selected",
-        false: ["hover:bg-action-ghost-hover"],
+        true: "bg-action-primary-subtle-normal dark:bg-action-ghost-inverted-active hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover text-action-primary-selected dark:text-action-inverted-selected",
+        false: ["hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover"],
       },
       isDisabled: {
         true: [
           "opacity-30 cursor-default focus:ring-0 hover:bg-white hover:bg-action-ghost-hover",
         ],
-        false: ["cursor-pointer hover:bg-action-ghost-hover"],
+        false: ["cursor-pointer hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover"],
       },
       collapsed: {
         true: [
-          "bg-action-ghost-hover items-center hover:bg-action-ghost-hover",
+          "bg-action-ghost-hover items-center hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover",
         ],
-        false: ["hover:bg-action-ghost-hover"],
+        false: ["hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover"],
       },
       isHeader: {
         true: ["hover:bg-white bg-white focus:!ring-0 cursor-default text-xs"],
         false: [],
       },
       isChild: {
-        true: "pl-2 hover:bg-action-ghost-hover",
-        false: "hover:bg-action-ghost-hover",
+        true: "pl-2 hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover",
+        false: "hover:bg-action-ghost-hover dark:hover:bg-action-ghost-inverted-hover",
       },
     },
 
@@ -139,11 +139,11 @@ onUpdated(() => {
             size="ss"
             class="w-9 h-9"
             emphasis="high"
-            :avatarText="item.title"
+            :avatarText="$t(item.title)"
           />
 
           <div v-if="!collapsed" class="flex gap-1 items-center font-semibold">
-            {{ item.title }}
+            {{ $t(item.title) }}
 
             <IconBase
               class="flex-shrink-0 transition-all ease-in-out duration-500"
@@ -159,12 +159,12 @@ onUpdated(() => {
         <div v-else-if="item.header">
           <div
             v-if="!collapsed"
-            class="flex justify-between items-center text-content-tertiary font-semibold pl-4 uppercase py-2"
+            class="flex justify-between items-center text-content-tertiary dark:text-content-inverted-tertiary font-semibold pl-4 uppercase py-2"
           >
-            {{ item.title }}
+            {{ $t(item.title) }}
 
             <IconBase
-              class="cursor-pointer hover:text-content-primary"
+              class="cursor-pointer hover:text-content-primary dark:text-content-inverted-primary"
               @click="$emit('headerClick', item)"
               :width="20"
               :height="20"
@@ -176,7 +176,7 @@ onUpdated(() => {
 
           <div
             v-else
-            class="w-full h-2 border-t border-border-default cursor-default"
+            class="w-full h-2 border-t border-border-default dark:border-border-default-alpha cursor-default"
           ></div>
         </div>
 
@@ -210,7 +210,7 @@ onUpdated(() => {
           </IconBase>
 
           <span v-if="!collapsed" :class="item.icon ? '' : 'pl-5'">
-            {{ item.title }}
+            {{ $t(item.title) }}
           </span>
         </div>
       </NuxtLink>

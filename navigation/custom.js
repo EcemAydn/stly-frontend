@@ -10,27 +10,27 @@ export default [
   // },
   {
     id: 2,
-    title: 'Plans & Pricing',
+    title: 'sidebar.Plans & Pricing',
     to: '/payment/plans',
   },
   {
     id: 3,
-    title: 'My Plan',
+    title: 'sidebar.My Plan',
     to: '/payment/plan-details',
   },
   {
     id: 4,
-    title: 'Sessions',
+    title: 'sidebar.Sessions',
     to: '/sessions'
   },
   {
     id: 5,
-    title: 'Account',
+    title: 'sidebar.Account',
     to: '/profile',
   },
   {
     id: 6,
-    title: 'Settings',
+    title: 'sidebar.Settings',
     to: '/settings',
   },
 ]

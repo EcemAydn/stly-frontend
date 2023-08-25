@@ -23,7 +23,7 @@ defineEmits(["update:modelValue", "close"]);
   <button
     type="button"
     :disabled="disabled"
-    class="text-content-primary leading-6 text-sm hover:bg-interaction-neutral-subtle-hover active:bg-interaction-neutral-subtle-active disabled:opacity-50 focus:ring-2 rounded px-2 w-fit flex items-center gap-1"
+    class="text-content-primary dark:text-content-inverted-primary leading-6 text-sm hover:bg-interaction-neutral-subtle-hover active:bg-interaction-neutral-subtle-active disabled:opacity-50 focus:ring-2 rounded px-2 w-fit flex items-center gap-1"
     :class="
       modelValue === tag
         ? 'bg-interaction-neutral-subtle-selected'

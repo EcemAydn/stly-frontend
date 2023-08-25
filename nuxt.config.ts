@@ -8,6 +8,10 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+  components: [
+    '~/components/icons',
+    '~/components',
+  ],
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
@@ -15,6 +19,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+
   modules: [
     '@nuxtjs/i18n',
     '@pinia/nuxt',
@@ -23,6 +28,5 @@ export default defineNuxtConfig({
   i18n: {
     vueI18n: './utils/i18n',
   },
-
   gtag: themeConfig.GoogleGtagConfiguration,
 })
