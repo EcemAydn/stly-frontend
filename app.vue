@@ -1,40 +1,59 @@
 <script setup>
 import { useAppStore } from './stores/app';
 import { useAlertStore } from './stores/alertStore';
+import { useLoadingStore } from './stores/loading';
+
+const loadingStore = useLoadingStore();
 
 const appStore = useAppStore();
 const alertStore = useAlertStore();
-
+function handleLoad() {
+  loadingStore.isLoading = false;
+}
 </script>
 
 <template>
-  <div class="overflow-hidden bg-white w-full h-full relative">
-    <!-- <Loading v-if="appStore.isLoading" /> -->
+  <ClientOnly>
+    <div class="overflow-hidden bg-white w-full h-full relative">
+      <!-- <Loading v-if="appStore.isLoading" /> -->
 
-    <TransitionGroup name="fade">
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </TransitionGroup>
+      <TransitionGroup name="fade">
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
+      </TransitionGroup>
 
-    <Teleport to="body">
-      <div class="pt-4 pr-2 z-[9999] fixed top-0 right-0 w-96">
-        <div class="relative flex flex-col gap-2">
-          <TransitionGroup name="slide-top">
-            <AlertComponent
-              v-for="(alert, index) in alertStore.alerts"
-              :key="alert.title + alert.type + index"
-              class="w-full shadow-md"
-              :style="{ position: 'absolute', top: 5 * index + 'px', right: 0, zIndex: 9999, opacity: index + 1 === alertStore.alerts.length ? '' : .7 }"
-              :title="alert.title"
-              :type="alert.type"
-              @click="alertStore.popAlert()"
-            />
-          </TransitionGroup>
+      <Teleport to="body">
+        <div class="pt-4 pr-2 z-[9999] fixed top-0 right-0 w-96">
+          <div class="relative flex flex-col gap-2">
+            <TransitionGroup name="slide-top">
+              <AlertComponent
+                v-for="(alert, index) in alertStore.alerts"
+                :key="alert.title + alert.type + index"
+                class="w-full shadow-md"
+                :style="{ position: 'absolute', top: 5 * index + 'px', right: 0, zIndex: 9999, opacity: index + 1 === alertStore.alerts.length ? '' : .7 }"
+                :title="alert.title"
+                :type="alert.type"
+                @click="alertStore.popAlert()"
+              />
+            </TransitionGroup>
+          </div>
         </div>
+      </Teleport>
+    </div>
+
+    <template #fallback>
+      <div class="fixed bg-white w-full h-full flex justify-center items-center text-3xl">
+        <lottie-player
+          autoplay
+          loop
+          style="width:400px"
+          src="/loading.json"
+          speed="1"
+        />
       </div>
-    </Teleport>
-  </div>
+    </template>
+  </ClientOnly>
 </template>
 
 <style>
