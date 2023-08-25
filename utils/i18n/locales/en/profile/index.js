@@ -22,4 +22,6 @@ export default {
   'EmailNotVerified': 'Email not verified',
   'EmailNotVerifiedDesc': 'Your email is not verified. Please verify your email to continue.',
   'Verify': 'Verify Email',
+  'Profile Picture': 'Profile Picture',
+  'ChangeProfilePicture': 'You can change your profile picture',
 }

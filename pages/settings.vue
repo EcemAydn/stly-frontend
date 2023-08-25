@@ -6,6 +6,8 @@ import { useAlertStore } from '@/stores/alertStore';
 import OceanModal from '@/components/modal/OceanModal.vue';
 import { useI18n } from 'vue-i18n';
 
+const themeMod = ref(localStorage.theme === 'dark');
+
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const { t } = useI18n();
@@ -13,7 +15,6 @@ const { t } = useI18n();
 const router = useRouter();
 const language = ref('en');
 const notificationEnabled = ref(authStore.currentUser.receive_emails);
-const themeMod = ref(false);
 const isLoading = ref(false);
 const showModal = ref(false);
 
@@ -23,6 +24,16 @@ definePageMeta({
   scalable: false,
   extra: true,
 });
+
+function toggleDarkMode() {
+  if (themeMod.value) {
+    localStorage.theme = 'dark';
+    document.documentElement.classList.add('dark');
+  } else {
+    localStorage.theme = 'light';
+    document.documentElement.classList.remove('dark');
+  }
+}
 
 async function deleteFunction(){
   deleteLoading.value = true;
@@ -63,6 +74,21 @@ watch(notificationEnabled, async (newValue) => {
     })
 })
 
+watch(themeMod, () => {
+    toggleDarkMode();
+});
+
+onMounted(() => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeMod.value = true;
+  } else {
+      document.documentElement.classList.remove('dark');
+      themeMod.value = false;
+  }
+});
+
+
 </script>
 
 <template>
@@ -77,6 +103,16 @@ watch(notificationEnabled, async (newValue) => {
           <CardComponent size="full" class="md:p-4">
             <div class="py-4 flex lg:justify-end">
               <ToggleComponent :label="t('settings.receive email')" v-model="notificationEnabled" />
+            </div>
+          </CardComponent>
+        </div>
+
+        <!-- Dark Mode -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 border-b-2 border-border-default-alpha gap-8 pb-8">
+          <HeaderComponent :title="t('settings.themeTitle')" :description="t('settings.themeDesc')" />
+          <CardComponent size="full" class="md:p-4">
+            <div class="py-4 flex lg:justify-end">
+              <ToggleComponent :label="t('settings.dark mode')" v-model="themeMod" />
             </div>
           </CardComponent>
         </div>

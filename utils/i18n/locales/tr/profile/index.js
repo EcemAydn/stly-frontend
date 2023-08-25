@@ -22,4 +22,6 @@ export default {
   'EmailNotVerified': 'E-posta adresi onaylanmamış',
   'EmailNotVerifiedDesc': 'E-postanız doğrulanmadı. Devam etmek için lütfen e-postanızı doğrulayın.',
   'Verify': 'Maili Onayla',
+  'Profile Picture': 'Profil Resmi',
+  'ChangeProfilePicture': 'Profil resminizi değiştirebilirsiniz',
 }

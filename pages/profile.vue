@@ -162,11 +162,11 @@ async function handleFileSelection(files) {
                 </template>
               </InlineBanner>
               <div class="flex flex-col gap-2 items-start">
-                <label class="text-sm font-medium">Profile Picture</label>
+                <label class="text-sm font-medium">{{ t('profile.Profile Picture')}}</label>
                 <div class="flex gap-2">
                   <img :src="authStore.currentUser.picture" class="rounded-md max-w-[100px]" />
                   <div class="flex flex-col ">
-                    <label class="text-sm pt-1 text-content-secondary dark:text-content-inverted-secondary">You can change your profile picture</label>
+                    <label class="text-sm pt-1 text-content-secondary dark:text-content-inverted-secondary">{{ t('profile.ChangeProfilePicture') }}</label>
                     <FileUploader
                       button
                       :loading="uploading"

@@ -10,6 +10,7 @@ import nonContextualColors from "./ui-color/non-contextual";
 import elevationShadow from "./ui-shadow/elevation";
 
 module.exports = {
+  darkMode: 'class',
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
