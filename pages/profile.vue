@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth/auth';
 import { useAlertStore } from '@/stores/alertStore';
+import { useStorageStore } from '@/stores/storage/storage';
 import { useI18n } from 'vue-i18n';
 import MailIcon from '@/components/icons/MailIcon.vue';
 import CheckIcon from '@/components/icons/CheckIcon.vue';
@@ -15,11 +16,13 @@ definePageMeta({
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
+const storageStore = useStorageStore();
 const { t } = useI18n();
 
 const passwordLoading = ref(false);
 const updateLoading = ref(false);
 const verifyLoading = ref(false);
+const uploading = ref(false);
 const logoutSessions = ref(false);
 const currentPassword = ref('');
 const newPassword = ref('');
@@ -101,6 +104,39 @@ function verifyEmail() {
   }
 }
 
+async function handleFileSelection(files) {
+  files = files.value;
+  const file = files && files.length > 0 ? files[0] : null;
+  uploading.value = true;
+  
+  if (file) {
+    const formData = new FormData();
+    formData.append('user_id', authStore.currentUser.id);
+    formData.append('image[]', file, 'deneme.png');
+
+    try {
+      await storageStore.createMedia(formData);
+      alertStore.addAlert({
+        title: 'Successfully uploaded image',
+        type: 'success'
+      })
+      uploading.value = false;
+    } catch (error) {
+      console.error('Görsel yüklenirken hata:', error);
+      alertStore.addAlert({
+        title: 'Failed to upload image',
+        type: 'negative'
+      });
+      uploading.value = false;
+
+    } finally {
+      uploading.value = false;
+    }
+  }
+}
+
+
+
 </script>
 
 <template>
@@ -111,7 +147,7 @@ function verifyEmail() {
       <div class="grid gap-8">
 
         <!-- profile -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-2 pt-2 border-border-default-alpha pb-8 pr-4">
+        <form @submit.prevent="updateUser" class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-2 pt-2 border-border-default-alpha pb-8 pr-4">
           <HeaderComponent :title="t('profile.Profile Settings')" :description="t('profile.careful what you share')" />
           <CardComponent  size="full" class="md:p-4">
             <div class="grid gap-4 w-full">
@@ -125,6 +161,23 @@ function verifyEmail() {
                   </IconBase>
                 </template>
               </InlineBanner>
+              <div class="flex flex-col gap-2 items-start">
+                <label class="text-sm font-medium">Profile Picture</label>
+                <div class="flex gap-2">
+                  <img :src="authStore.currentUser.picture" class="rounded-md max-w-[100px]" />
+                  <div class="flex flex-col ">
+                    <label class="text-sm pt-1 text-content-secondary dark:text-content-inverted-secondary">You can change your profile picture</label>
+                    <FileUploader
+                      button
+                      :loading="uploading"
+                      helper=".jpg .jpeg .png .gif .webp"
+                      accept=".jpg, .jpeg, .png, .gif, .webp"
+                      inverted
+                      @update:modelValue="handleFileSelection"
+                    />
+                  </div>
+                </div>
+              </div>
               <div>
                 <div class="mt-2">
                   <InputComponent
@@ -186,13 +239,13 @@ function verifyEmail() {
             </div>
       
             <div class="flex justify-end mt-4 gap-2">
-              <ButtonComponent :loading="updateLoading" :text="$t('profile.Save Changes')" @click="updateUser" />
+              <ButtonComponent :loading="updateLoading" :text="$t('profile.Save Changes')" type="submit" />
             </div>
           </CardComponent>
-        </div>
+        </form>
 
         <!-- password -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <form @submit.prevent="changePassword" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <HeaderComponent :title="t('profile.Password Settings')" :description="t('profile.careful what you share')" />
           <CardComponent size="full" class="p-4">
             
@@ -238,11 +291,11 @@ function verifyEmail() {
               </div>
               <CheckboxComponent :label="t('profile.Logout of all sessions')" v-model="logoutSessions" />
               <div class="flex justify-end  gap-2">
-                <ButtonComponent :loading="passwordLoading" :text="t('profile.Change Password')" @click="changePassword" />
+                <ButtonComponent :loading="passwordLoading" :text="t('profile.Change Password')" type="submit" />
               </div>
             </div>
           </CardComponent>
-        </div>
+        </form>
 
       </div>
     </CardComponent>
