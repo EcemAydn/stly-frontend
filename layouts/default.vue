@@ -98,9 +98,10 @@ onUnmounted(() => {
     <Transition name="slide-x">
     <NotificationComponent
       v-if="showNotification"
-      description="Update your username and manage your account"
+      :title="$t('sidebar.Notifications')"
+      :description="$t('sidebar.Notifications Description')"
       @close="showNotification = false"
-      buttonText="Mark all as read"
+      :buttonText="$t('sidebar.Mark all as read')"
     >
       <!-- <div v-for="i in 30" class="p-4 text-xs flex gap-4 items-center border-b">
         <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-md" />
@@ -111,7 +112,7 @@ onUnmounted(() => {
       <div class="w-full h-full flex flex-col justify-center items-center text-content-primary dark:text-content-inverted-primary text-sm">
         <img src="../public/NoFilesFound.svg" />
         <div>
-          Notification is not found
+          {{ $t('sidebar.Notification is not found') }}
         </div>
       </div>
     </NotificationComponent>
@@ -141,7 +142,7 @@ onUnmounted(() => {
         </div>
           <DropdownComponent independent>
             <template #activator>
-              <div class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
+              <div v-if="authStore.currentUser" class="flex items-center gap-2" :class="collapsed ? 'pl-[7px]' : 'pl-3'">
                 <img :src="authStore.currentUser.picture" class="w-8 h-8 rounded-full" />
                 <div class="text-sm text-content-primary dark:text-content-inverted-primary" v-if="!isMobile && !collapsed">{{ authStore.currentUser.first_name.toUpperCase() + ' ' + authStore.currentUser.last_name.toUpperCase() }}</div>
               </div>

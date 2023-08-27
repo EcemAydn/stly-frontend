@@ -52,20 +52,24 @@ defineEmits(["update:modelValue"]);
     <label
       v-if="label"
       class="text-sm font-medium leading-6"
-      :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50 dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
+      :class="disabled ? 'text-content-primary dark:text-content-inverted-primary/50' : 'text-content-primary dark:text-content-inverted-primary'"
       >{{ label }}</label
     >
     <div
       @click="() => inputTag.focus()"
       class="flex gap-2 transition-all ease-in-out duration-300 items-center border bg-interaction-background-form-field dark:bg-interaction-background-inverted-modeless py-2 px-4 w-full rounded-md focus-within:ring-1 focus-within:border-interaction-default-normal focus-within:ring-interaction-default-normal cursor-text"
-      :class="
-        error
-          ? 'border-interaction-border-alert'
-          : 'border-interaction-border-neutral-normal' +
-            (!disabled
-              ? ' hover:border-interaction-border-hover text-content-primary dark:text-content-inverted-primary'
-              : 'disabled:border-interaction-border-neutral-normal text-content-primary dark:text-content-inverted-primary/50 dark:text-content-inverted-primary/50')
-      "
+      :class="{
+        'border-interaction-border-alert': error,
+        'border-interaction-border-neutral-normal': !error,
+        'dark:border-interaction-ghost-inverted-hover': !error,
+        'hover:border-interaction-border-hover': !disabled,
+        'dark:hover:border-interaction-border-hover': !disabled,
+        'text-content-primary': !disabled,
+        'dark:text-content-inverted-primary': !disabled,
+        'disabled:border-red-500': disabled,
+        'text-content-primary/50': disabled,
+        'dark:text-content-inverted-primary/50': disabled
+      }"
     >
       <slot name="prepend"></slot>
       <input

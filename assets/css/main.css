@@ -29,3 +29,19 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #fff inset;
   box-shadow: 0 0 0px 1000px #fff inset;
 }
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #333 inset;
+  box-shadow: 0 0 0px 1000px #272e35 inset;
+  -webkit-text-fill-color: white; /* Webkit tarayıcılar için yazı rengi */
+  color: white; /* Diğer tarayıcılar için yazı rengi */
+}
+

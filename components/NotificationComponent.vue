@@ -18,7 +18,7 @@ defineEmits(["close", "NotificationButton"]);
     <div @click="$emit('close')" class="w-full h-full fixed z-[999] inset-0">
       <div
         @click.stop
-        class="bg-background-default dark:bg-background-inverted border-l border-border-neutral h-full absolute w-full sm:w-3/5 lg:w-1/3 z-40 top-0 right-0 shadow-bottom-300 scroll-hide"
+        class="bg-background-default dark:bg-background-inverted border-l dark:border-border-neutral h-full absolute w-full sm:w-3/5 lg:w-1/3 z-40 top-0 right-0 shadow-bottom-300 scroll-hide"
       >
       <div class="block sm:hidden text-right p-2">
         <button @click="$emit('close')" class="border border-content-secondary rounded-full p-1">

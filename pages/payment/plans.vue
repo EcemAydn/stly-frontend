@@ -35,7 +35,7 @@ const tabs = ref([
 ]);
 
 async function CardFunction(plan) {
-  if (plan.text === 'Cancel') {
+  if (plan.text === t('payment.Cancel')) {
     showCanceling.value = true;
   } else {
     subscriptionStore.selectedPlan = plan;
@@ -201,7 +201,7 @@ onMounted(async () => {
           <div class="grid sm:grid-cols-5 gap-4">
             <div class="sm:col-span-3 flex flex-col gap-2">
               <div class="flex w-full items-center justify-between">
-                <div class="text-lg">Upgrade Your Plan</div>
+                <div class="text-lg">{{ $t('payment.Upgrade Your Plan') }}</div>
                 <IconBase @click="showModal = false" class="cursor-pointer sm:hidden">
                   <CloseIcon />
                 </IconBase>
@@ -250,7 +250,7 @@ onMounted(async () => {
             </div>
             <div class="w-full sm:col-span-2">
               <div class="flex w-full items-center justify-between pb-2">
-                <div class="text-lg">Summary</div>
+                <div class="text-lg">{{ $t('payment.Summary') }}</div>
                 <IconBase @click="showModal = false" class="cursor-pointer hidden sm:block">
                   <CloseIcon />
                 </IconBase>
@@ -258,39 +258,39 @@ onMounted(async () => {
               <div v-if="subscriptionStore.selectedPlan" class="text-xs flex flex-col gap-4">
                 <div class="">
                   <div class="flex gap-1 border border-border-secondary p-2">
-                    <div>Your current plan:</div>
+                    <div>{{ $t('payment.Your current plan') }}:</div>
                     <div class="font-medium">{{ subscriptionStore.selectedPlan.name }}</div>
                   </div>
                   <div class="flex gap-1 border border-border-secondary p-2">
-                    <div>Currently paying:</div>
+                    <div>{{ $t('payment.Currently paying') }}:</div>
                     <div class="font-medium">${{ subscriptionStore.selectedPlan.price }}</div>
                   </div>
                 </div>
                 <div class="">
                   <div class="flex flex-col gap-1 border border-border-secondary p-2">
-                    <div>Total due today:</div>
+                    <div>{{ $t('payment.Total due today') }}:</div>
                     <div class="font-medium text-lg">${{ subscriptionStore.selectedPlan.price }}</div>
                   </div>
                   <div class="flex gap-1 border border-border-secondary p-2">
                     <div class="font-medium">${{ selectedHeader === 'MONTHLY' ? subscriptionStore.selectedPlan.price*12 : subscriptionStore.selectedPlan.price }}</div>
-                    <div>will be billed every year until canceled.</div>
+                    <div>{{ $t('payment.will be billed every year until canceled') }}.</div>
                   </div>
                 </div>
                 <NuxtLink to="/payment/checkout">
-                  <ButtonComponent block text="Go To Payment" />
+                  <ButtonComponent block :text="$t('payment.Go To Payment')" />
                 </NuxtLink>
               </div>
               <div v-else class="text-xs flex flex-col gap-4">
                 <div class="flex gap-1">
-                  <div>Your current plan:</div>
-                  <div class="font-medium">Free</div>
+                  <div>{{ $t('payment.Your current plan') }}:</div>
+                  <div class="font-medium">{{ $t('payment.Free') }}</div>
                 </div>
                 <div class="flex gap-1">
-                  <div>Currently paying:</div>
+                  <div>{{ $t('payment.Currently paying') }}:</div>
                   <div class="font-medium">$0</div>
                 </div>
                 <div class="flex gap-1">
-                  <div>Total due today:</div>
+                  <div>{{ $t('payment.Total due today') }}:</div>
                   <div class="font-medium">$0</div>
                 </div>
               </div>
@@ -304,10 +304,10 @@ onMounted(async () => {
     <Transition name="fade">
       <OceanModal size="small" v-if="showCanceling" class="w-full modal">
         <div class="flex flex-col items-center gap-4">
-          <div>Are you sure you want to cancel your subscription?</div>
+          <div>{{ $t('payment.Are you sure you want to cancel your subscription?') }}</div>
           <div class="flex gap-4 justify-end items-center">
-            <ButtonComponent size="small" @click="showCanceling = false">No</ButtonComponent>
-            <ButtonComponent :loading="cancelLoading" size="small" appearance="secondary" @click="handleCancel">Yes</ButtonComponent>
+            <ButtonComponent size="small" @click="showCanceling = false">{{ $t('payment.No') }}</ButtonComponent>
+            <ButtonComponent :loading="cancelLoading" size="small" appearance="secondary" @click="handleCancel">{{ $t('payment.Yes') }}</ButtonComponent>
           </div>
         </div>
       </OceanModal>
